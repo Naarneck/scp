@@ -1,11 +1,14 @@
 #ifndef SCOP_H
 # define SCOP_H
-# include "get_next_line.h"
-# include <SDL2/SDL.h>
-// # include <SDL_ttf.h>
+
 # include <stdio.h> //del
 # include <math.h>
+# include <stdlib.h>
+# include <GL/glew.h> 
+# include <OpenGL/gl.h>
+# include <SDL2/SDL.h>
 # include "libft/libft.h"
+# include "get_next_line.h"
 
 # define WIDTH 800
 # define HEIGHT 800
@@ -37,6 +40,7 @@
 
 typedef	struct	s_data
 {
+	GLenum		status;
 	int			run;
 
 }				t_data;

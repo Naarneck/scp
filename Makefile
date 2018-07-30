@@ -14,8 +14,8 @@ NAME = scop
 SRCS = main.c get_next_line.c
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
-FFLAGS = -F ~/Library/Frameworks -framework SDL2 -framework SDL2_ttf
-CGFLAGS = -framework OpenGL -framework AppKit
+FFLAGS = -framework OpenGL -framework AppKit -F ~/Library/Frameworks \
+ -framework SDL2 -framework SDL2_ttf 
 INCS = scop.h
 JUNK = $(wildcard .DS_Store */.DS_Store */*/.DS_Store *.gch \
 		  get_next_line/*.gch)
@@ -23,10 +23,11 @@ JUNK = $(wildcard .DS_Store */.DS_Store */*/.DS_Store *.gch \
 all:$(NAME)
 
 $(NAME): 
-	make -C libft/
-	gcc -o $(NAME) $(SRCS) -F ~/Library/Frameworks -framework SDL2 -framework SDL2_ttf libft/libft.a
-	rm -rf $(JUNK)
-	echo "compiled"
+	@make -C libft/
+	@make -C libglew/
+	@gcc -o $(NAME) $(SRCS) $(FFLAGS) libft/libft.a -I libglew/include libglew/lib/libGLEW.a 
+	@rm -rf $(JUNK)
+	@echo "compiled"
 
 clean:
 	@rm -rf $(OBJS)
@@ -39,6 +40,7 @@ fclean: clean
 
 libclean: fclean
 	@make fclean -C libft/
+	@make clean -C libglew/
 	@echo "libcleaned"
 
 re: fclean all
