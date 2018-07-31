@@ -46,12 +46,10 @@ int main(int argc, char const **argv)
 	t_data		d;
 	t_mesh 		mesh;
 
-	t_vertex vertices[] = {vertex_init(vinit(-0.5, -0.5, 0.0)),
+	t_vertex vertices[] = {vertex_init(vinit(-0.2, -0.5, 0.0)),
 							vertex_init(vinit(0.0, 0.5, 0.0)),
 							vertex_init(vinit(0.5, -0.5, 0.0))};
 
-	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
-	write(1, "2\n", 2);
 	data_init(&d);
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -64,18 +62,20 @@ int main(int argc, char const **argv)
 	window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
+	glewExperimental = GL_TRUE;
 	d.status = glewInit();
+
 	if(d.status != GLEW_OK)
 	{
 		printf("error?");
 	}
+	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
 	while (d.run)
 	{
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e);
 		
-		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
-		write(1, "3\n", 2);
+		glClearColor(1.0f, 0.45f, 0.3f, 1.0f);
 		mesh_draw(&mesh);
 
 		update(window);

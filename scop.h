@@ -15,6 +15,7 @@
 # define HEIGHT 800
 # define NUM_BUFFERS 1
 # define POSITION_VB 0
+# define NUM_SHADER 2
 # define PI 3.14159265
 # define COSN(angle) cos(angle * PI / 180)
 # define SINS(angle) sin(angle * PI / 180)
@@ -74,6 +75,12 @@ typedef	struct	s_mesh
 	GLuint			vertexArrBuf[NUM_BUFFERS];
 	unsigned int	drawCount;
 }				t_mesh;
+
+typedef	struct	s_shader
+{
+	GLuint			program;
+	GLuint			shaders[NUM_SHADER];
+}				t_shader;
 
 typedef	struct	s_data
 {

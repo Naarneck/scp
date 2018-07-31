@@ -4,8 +4,8 @@
 void mesh_init(t_vertex *vertices, unsigned int num, t_mesh *mesh)
 {
 	mesh->drawCount = num;
-	write(1, "1\n", 2);
 	glGenVertexArrays(1, &mesh->vertexArrObj);
+
 	glBindVertexArray(mesh->vertexArrObj);
 	glGenBuffers(NUM_BUFFERS, mesh->vertexArrBuf);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexArrBuf[POSITION_VB]);
