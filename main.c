@@ -41,11 +41,17 @@ int		handleEvent(SDL_Event event)
 int main(int argc, char const **argv)
 {
 	SDL_Window	*window;
-	// SDL_Surface	*screen;
 	SDL_GLContext glContext;
 	SDL_Event	e;
 	t_data		d;
+	t_mesh 		mesh;
 
+	t_vertex vertices[] = {vertex_init(vinit(-0.5, -0.5, 0.0)),
+							vertex_init(vinit(0.0, 0.5, 0.0)),
+							vertex_init(vinit(0.5, -0.5, 0.0))};
+
+	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
+	write(1, "2\n", 2);
 	data_init(&d);
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -58,7 +64,6 @@ int main(int argc, char const **argv)
 	window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
 	glContext = SDL_GL_CreateContext(window);
-	// screen = SDL_GetWindowSurface(window);
 	d.status = glewInit();
 	if(d.status != GLEW_OK)
 	{
@@ -68,12 +73,14 @@ int main(int argc, char const **argv)
 	{
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e);
+		
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		write(1, "3\n", 2);
+		mesh_draw(&mesh);
 
 		update(window);
 	}
+	mesh_del(&mesh);
 	quit_scop(glContext , window);
-
 	return 0;
 }

@@ -9,9 +9,17 @@
 # include <SDL2/SDL.h>
 # include "libft/libft.h"
 # include "get_next_line.h"
+# include <unistd.h>
 
 # define WIDTH 800
 # define HEIGHT 800
+# define NUM_BUFFERS 1
+# define POSITION_VB 0
+# define PI 3.14159265
+# define COSN(angle) cos(angle * PI / 180)
+# define SINS(angle) sin(angle * PI / 180)
+# define TANG(angle) tan(angle * PI / 180)
+# define ACOSN(angle) acos(angle) * 180 / PI
 
 # define KEY_UP 13
 # define KEY_DOWN 1
@@ -38,6 +46,35 @@
 # define KEY_Q 12
 # define KEY_E 14
 
+typedef	struct	s_color
+{
+	float		r;
+	float		g;
+	float		b;
+}				t_color;
+
+typedef	struct	s_vector
+{
+	float		x;
+	float		y;
+	float		z;
+}				t_vector;
+
+typedef	struct	s_vertex
+{
+	t_vector	pos;
+}				t_vertex;
+
+
+typedef	struct	s_mesh
+{
+	t_vertex*		vertices;
+	unsigned int	numVert;
+	GLuint			vertexArrObj;
+	GLuint			vertexArrBuf[NUM_BUFFERS];
+	unsigned int	drawCount;
+}				t_mesh;
+
 typedef	struct	s_data
 {
 	GLenum		status;
@@ -45,4 +82,25 @@ typedef	struct	s_data
 
 }				t_data;
 
+
+void mesh_init(t_vertex * vertices, unsigned int num, t_mesh * mesh);
+void mesh_del(t_mesh *mesh);
+void mesh_draw(t_mesh *mesh);
+
+t_color			col_mix(t_color base, t_color col2);
+t_color			col_mult_d(t_color col1, float d);
+t_color			col_mult(t_color col1, t_color col2);
+t_color			col_norm(int col);
+t_color			col_avg(t_color col1, t_color col2);
+t_color			col_clamp(t_color col1);
+t_color			col_add(t_color col1, t_color col2);
+
+t_vector		vinit(float x, float y, float z);
+t_vector		vsub(t_vector v1, t_vector v2);
+t_vector		vadd(t_vector v1, t_vector v2);
+t_vector		vmul(t_vector v1, float l);
+float			vlen(t_vector v1);
+t_vector		vnorm(t_vector v1);
+float			vdot(t_vector v1, t_vector v2);
+t_vertex		vertex_init(t_vector pos);
 #endif
