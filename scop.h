@@ -15,7 +15,7 @@
 # define HEIGHT 800
 # define NUM_BUFFERS 1
 # define POSITION_VB 0
-# define NUM_SHADER 2
+# define NUM_SHADERS 2
 # define PI 3.14159265
 # define COSN(angle) cos(angle * PI / 180)
 # define SINS(angle) sin(angle * PI / 180)
@@ -79,7 +79,7 @@ typedef	struct	s_mesh
 typedef	struct	s_shader
 {
 	GLuint			program;
-	GLuint			shaders[NUM_SHADER];
+	GLuint			shaders[NUM_SHADERS];
 }				t_shader;
 
 typedef	struct	s_data
@@ -89,6 +89,11 @@ typedef	struct	s_data
 
 }				t_data;
 
+void			shader_init(char *filename, t_shader *shader);
+void			shader_del(t_shader *shader);
+GLuint			shader_create(char *text, GLenum shaderType);
+void			shader_bind(t_shader *shader);
+char			*shader_load(const char *filename);
 
 void mesh_init(t_vertex * vertices, unsigned int num, t_mesh * mesh);
 void mesh_del(t_mesh *mesh);
@@ -110,4 +115,6 @@ float			vlen(t_vector v1);
 t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
 t_vertex		vertex_init(t_vector pos);
+
+void	quit_scop(SDL_GLContext glContext, SDL_Window	*window);
 #endif

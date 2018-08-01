@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 NAME = scop
-SRCS = main.c get_next_line.c vector.c colors.c mesh.c
+SRCS = main.c get_next_line.c vector.c colors.c mesh.c shader.c
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 FFLAGS = -framework OpenGL -framework AppKit -F ~/Library/Frameworks \

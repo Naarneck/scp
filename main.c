@@ -40,11 +40,12 @@ int		handleEvent(SDL_Event event)
 
 int main(int argc, char const **argv)
 {
-	SDL_Window	*window;
-	SDL_GLContext glContext;
-	SDL_Event	e;
-	t_data		d;
-	t_mesh 		mesh;
+	SDL_Window		*window;
+	SDL_GLContext	glContext;
+	SDL_Event		e;
+	t_data			d;
+	t_mesh 			mesh;
+	t_shader		shader;
 
 	t_vertex vertices[] = {vertex_init(vinit(-0.2, -0.5, 0.0)),
 							vertex_init(vinit(0.0, 0.5, 0.0)),
@@ -69,7 +70,9 @@ int main(int argc, char const **argv)
 	{
 		printf("error?");
 	}
+	shader_init("shders/basic", &shader);
 	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
+	
 	while (d.run)
 	{
 		SDL_PollEvent(&e);
