@@ -70,7 +70,7 @@ int main(int argc, char const **argv)
 	{
 		printf("error?");
 	}
-	shader_init("shders/basic", &shader);
+	shader_init("shaders/basic", &shader);
 	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
 	
 	while (d.run)
