@@ -84,8 +84,10 @@ typedef	struct	s_shader
 
 typedef	struct	s_data
 {
-	GLenum		status;
-	int			run;
+	SDL_Window		*window;
+	SDL_GLContext	glContext;
+	GLenum			status;
+	int				run;
 
 }				t_data;
 
@@ -116,5 +118,5 @@ t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
 t_vertex		vertex_init(t_vector pos);
 
-void	quit_scop(SDL_GLContext glContext, SDL_Window	*window);
+void			quit_scop(t_data	*d);
 #endif

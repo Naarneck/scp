@@ -6,7 +6,6 @@ void shader_init(char *filename, t_shader *shader)
 
 	shader->program = glCreateProgram();
 	shader->shaders[0] = shader_create(shader_load(ft_strjoin(filename, ".vs")), GL_VERTEX_SHADER);
-	write(1, "ok\n" ,3);
 	shader->shaders[1] = shader_create(shader_load(ft_strjoin(filename, ".fs")), GL_FRAGMENT_SHADER);
 	i = 0;
 	while (i < NUM_SHADERS)
@@ -40,17 +39,16 @@ void shader_del(t_shader *shader)
 GLuint shader_create(char *text, GLenum shaderType)
 {
 	GLuint			shader;
-	const GLchar 	*shaderSrc[1];
+	// const char 		*shaderSrc;
 	GLint			shaderSrcLength[1];	
 
 	shader = glCreateShader(shaderType);
 	if (!shader)
 		printf("error create shader\n");
-	shaderSrc[0] = text;
+	// shaderSrc = text;
 	shaderSrcLength[0] = ft_strlen(text);
-		write(1, "sk\n" ,3);
-	glShaderSource(shader, 1, (const char**)&text, shaderSrcLength);
-		write(1, "nk\n" ,3);
+	printf("%i\n", ft_strlen(text));
+	glShaderSource(shader, 1, (const char**)&text, NULL);
 	glCompileShader(shader);
 	//checkshader;
 	return shader;
@@ -68,7 +66,6 @@ char *shader_load(const char *filename)
 	char *line;
 
 	text = ft_strnew(1);
-	write(1, "ak\n" ,3);
 	fd = open(filename, O_RDONLY);
 		if (fd < 0)
 			exit(0);
@@ -79,6 +76,6 @@ char *shader_load(const char *filename)
 		free(line);
 	}
 	printf("%s\n", text);
-	close(fd);
+	// close(fd);
 	return text;
 }

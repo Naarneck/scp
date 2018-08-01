@@ -5,16 +5,16 @@ void	data_init(t_data *d)
 	d->run = 1;
 }
 
-void	update(SDL_Window	*window)
+void	update(t_data *d)
 {
-	SDL_GL_SwapWindow(window);
+	SDL_GL_SwapWindow(d->window);
 }
 
-void	quit_scop(SDL_GLContext glContext, SDL_Window	*window)
+void	quit_scop(t_data *d)
 {
 	// SDL_FreeSurface(screen);
-	SDL_GL_DeleteContext(glContext);
-	SDL_DestroyWindow(window);
+	SDL_GL_DeleteContext(d->glContext);
+	SDL_DestroyWindow(d->window);
 	SDL_Quit();
 }
 
@@ -40,8 +40,6 @@ int		handleEvent(SDL_Event event)
 
 int main(int argc, char const **argv)
 {
-	SDL_Window		*window;
-	SDL_GLContext	glContext;
 	SDL_Event		e;
 	t_data			d;
 	t_mesh 			mesh;
@@ -52,7 +50,7 @@ int main(int argc, char const **argv)
 							vertex_init(vinit(0.5, -0.5, 0.0))};
 
 	data_init(&d);
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -60,9 +58,9 @@ int main(int argc, char const **argv)
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_UNDEFINED,
-			SDL_WINDOWPOS_UNDEFINED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
-	glContext = SDL_GL_CreateContext(window);
+	d.window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
+	d.glContext = SDL_GL_CreateContext(d.window);
 	glewExperimental = GL_TRUE;
 	d.status = glewInit();
 
@@ -77,13 +75,14 @@ int main(int argc, char const **argv)
 	{
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e);
-		
-		glClearColor(1.0f, 0.45f, 0.3f, 1.0f);
+		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT);
+		shader_bind(&shader);
 		mesh_draw(&mesh);
-
-		update(window);
+		update(&d);
 	}
+	shader_del(&shader);
 	mesh_del(&mesh);
-	quit_scop(glContext , window);
+	quit_scop(&d);
 	return 0;
 }
