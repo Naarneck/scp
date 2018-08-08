@@ -1,6 +1,6 @@
 #version 120
 
-attribute vec3 position
+attribute vec3 position;
 
 void main()
 {

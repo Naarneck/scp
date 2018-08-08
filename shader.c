@@ -39,16 +39,15 @@ void shader_del(t_shader *shader)
 GLuint shader_create(char *text, GLenum shaderType)
 {
 	GLuint			shader;
-	// const char 		*shaderSrc;
+	const GLchar 	*shaderSrc;
 	GLint			shaderSrcLength[1];	
 
 	shader = glCreateShader(shaderType);
 	if (!shader)
 		printf("error create shader\n");
-	// shaderSrc = text;
-	shaderSrcLength[0] = ft_strlen(text);
-	printf("%i\n", ft_strlen(text));
-	glShaderSource(shader, 1, (const char**)&text, NULL);
+	shaderSrc = text;
+	// shaderSrcLength[0] = ft_strlen(text);
+	glShaderSource(shader, 1, &shaderSrc, NULL);
 	glCompileShader(shader);
 	//checkshader;
 	return shader;
