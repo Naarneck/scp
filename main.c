@@ -44,6 +44,7 @@ int main(int argc, char const **argv)
 	t_data			d;
 	t_mesh 			mesh;
 	t_shader		shader;
+	t_texture		texture;
 
 	t_vertex vertices[] = {vertex_init(vinit(-0.2, -0.5, 0.0)),
 							vertex_init(vinit(0.0, 0.5, 0.0)),
@@ -69,6 +70,7 @@ int main(int argc, char const **argv)
 		printf("error?");
 	}
 	shader_init("shaders/basic", &shader);
+	texture_init("resources/pusheen.jpg", &texture);
 	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
 	
 	while (d.run)
@@ -78,11 +80,13 @@ int main(int argc, char const **argv)
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader_bind(&shader);
+		texture_bind(0, &texture);
 		mesh_draw(&mesh);
 		update(&d);
 	}
 	shader_del(&shader);
 	mesh_del(&mesh);
+	texture_del(&texture);
 	quit_scop(&d);
 	return 0;
 }

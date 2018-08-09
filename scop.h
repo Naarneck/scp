@@ -61,6 +61,11 @@ typedef	struct	s_vector
 	float		z;
 }				t_vector;
 
+typedef	struct	s_mat4
+{
+	float		a[16];
+}				t_mat4;
+
 typedef	struct	s_vertex
 {
 	t_vector	pos;
@@ -74,6 +79,7 @@ typedef	struct	s_mesh
 	GLuint			vertexArrObj;
 	GLuint			vertexArrBuf[NUM_BUFFERS];
 	unsigned int	drawCount;
+
 }				t_mesh;
 
 typedef	struct	s_shader
@@ -91,15 +97,32 @@ typedef	struct	s_data
 
 }				t_data;
 
+typedef	struct	s_texture
+{
+	GLuint			texture;
+}				t_texture;
+
+typedef	struct	s_cam
+{
+	t_vector	pos;
+	t_vector	viewDir;
+}				t_cam;
+
+
+
 void			shader_init(char *filename, t_shader *shader);
 void			shader_del(t_shader *shader);
 GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 
-void mesh_init(t_vertex * vertices, unsigned int num, t_mesh * mesh);
-void mesh_del(t_mesh *mesh);
-void mesh_draw(t_mesh *mesh);
+void			mesh_init(t_vertex * vertices, unsigned int num, t_mesh * mesh);
+void			mesh_del(t_mesh *mesh);
+void			mesh_draw(t_mesh *mesh);
+
+void			texture_del(t_texture *texture);
+void			texture_bind(unsigned int unit, t_texture *texture);
+void			texture_init(const char *fileName, t_texture *texture);
 
 t_color			col_mix(t_color base, t_color col2);
 t_color			col_mult_d(t_color col1, float d);
