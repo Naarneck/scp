@@ -46,9 +46,9 @@ int main(int argc, char const **argv)
 	t_shader		shader;
 	t_texture		texture;
 
-	t_vertex vertices[] = {vertex_init(vinit(-0.2, -0.5, 0.0)),
-							vertex_init(vinit(0.0, 0.5, 0.0)),
-							vertex_init(vinit(0.5, -0.5, 0.0))};
+	t_vertex vertices[] = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
+							vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0)),
+							vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 0.0))};
 
 	data_init(&d);
 	SDL_Init(SDL_INIT_EVERYTHING);

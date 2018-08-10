@@ -13,7 +13,8 @@
 
 # define WIDTH 800
 # define HEIGHT 800
-# define NUM_BUFFERS 1
+# define NUM_BUFFERS 2
+# define TEXTCOORD_VB 0
 # define POSITION_VB 0
 # define NUM_SHADERS 2
 # define PI 3.14159265
@@ -61,14 +62,22 @@ typedef	struct	s_vector
 	float		z;
 }				t_vector;
 
+typedef	struct	s_coord
+{
+	float		x;
+	float		y;
+}				t_coord;
+
+
 typedef	struct	s_mat4
 {
-	float		a[16];
+	float		a[16]; //wtf
 }				t_mat4;
 
 typedef	struct	s_vertex
 {
 	t_vector	pos;
+	t_coord		uv;
 }				t_vertex;
 
 
@@ -139,7 +148,18 @@ t_vector		vmul(t_vector v1, float l);
 float			vlen(t_vector v1);
 t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
-t_vertex		vertex_init(t_vector pos);
+
+t_vertex		vertex_init(t_vector pos, t_coord uv);
+t_coord			vertex_getUV(t_vertex vertex);
+t_vector		vertex_getPos(t_vertex vertex);
+
+t_coord			cinit(float x, float y);
+t_coord			csub(t_coord v1, t_coord v2);
+t_coord			cadd(t_coord v1, t_coord v2);
+t_coord			cmul(t_coord v1, float l);
+t_coord			cnorm(t_coord v1);
+float			cdot(t_coord v1, t_coord v2);
+float			clen(t_coord v1);
 
 void			quit_scop(t_data	*d);
 #endif

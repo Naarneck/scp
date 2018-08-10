@@ -15,6 +15,8 @@ void shader_init(char *filename, t_shader *shader)
 	}
 	
 	glBindAttribLocation(shader->program, 0, "position");
+	glBindAttribLocation(shader->program, 1, "tex.Coord");
+
 	glLinkProgram(shader->program);
 	//Checkshader;
 	glValidateProgram(shader->program);
