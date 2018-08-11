@@ -117,6 +117,16 @@ typedef	struct	s_cam
 	t_vector	viewDir;
 }				t_cam;
 
+typedef	struct	s_model
+{
+	t_mat4		pos;
+	t_mat4		rot;
+	t_mat4		rotX;
+	t_mat4		rotY;
+	t_mat4		rotZ;
+	t_mat4		scale;
+}				t_model;
+
 typedef	struct	s_transf
 {
 	t_vector	pos;
@@ -124,6 +134,8 @@ typedef	struct	s_transf
 	t_vector	scale;
 }				t_transf;
 
+void			transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf);
+t_mat4			transform_getModel(t_transf *tf);
 
 void			shader_init(char *filename, t_shader *shader);
 void			shader_del(t_shader *shader);
@@ -154,6 +166,13 @@ t_vector		vmul(t_vector v1, float l);
 float			vlen(t_vector v1);
 t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
+
+t_mat4			mat4_scale(t_vector sc);
+t_mat4			mat4_rotateX(t_vector ang);
+t_mat4			mat4_rotateY(t_vector ang);
+t_mat4			mat4_rotateZ(t_vector ang);
+t_mat4			mat4_translate(t_vector pos);
+t_mat4 			mat4_mult(t_mat4 a, t_mat4 b);
 
 t_vertex		vertex_init(t_vector pos, t_coord uv);
 t_coord			vertex_getUV(t_vertex vertex);
