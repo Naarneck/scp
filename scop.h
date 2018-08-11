@@ -14,7 +14,7 @@
 # define WIDTH 800
 # define HEIGHT 800
 # define NUM_BUFFERS 2
-# define TEXTCOORD_VB 0
+# define TEXCOORD_VB 1
 # define POSITION_VB 0
 # define NUM_SHADERS 2
 # define PI 3.14159265
@@ -125,7 +125,7 @@ GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 
-void			mesh_init(t_vertex * vertices, unsigned int num, t_mesh * mesh);
+void			mesh_init(t_vertex *vertices, unsigned int num, t_mesh * mesh);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
 
