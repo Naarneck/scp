@@ -71,7 +71,7 @@ typedef	struct	s_coord
 
 typedef	struct	s_mat4
 {
-	float		a[16]; //wtf
+	float		a[4][4]; //wtf 
 }				t_mat4;
 
 typedef	struct	s_vertex
@@ -117,6 +117,12 @@ typedef	struct	s_cam
 	t_vector	viewDir;
 }				t_cam;
 
+typedef	struct	s_transf
+{
+	t_vector	pos;
+	t_vector	rot;
+	t_vector	scale;
+}				t_transf;
 
 
 void			shader_init(char *filename, t_shader *shader);
