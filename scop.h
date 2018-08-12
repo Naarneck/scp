@@ -16,7 +16,12 @@
 # define NUM_BUFFERS 2
 # define TEXCOORD_VB 1
 # define POSITION_VB 0
+
 # define NUM_SHADERS 2
+
+# define NUM_UNIFORMS 1
+# define TRANSFORM_U 0
+
 # define PI 3.14159265
 # define COSN(angle) cos(angle * PI / 180)
 # define SINS(angle) sin(angle * PI / 180)
@@ -95,6 +100,7 @@ typedef	struct	s_shader
 {
 	GLuint			program;
 	GLuint			shaders[NUM_SHADERS];
+	GLuint			unifs[NUM_UNIFORMS];
 }				t_shader;
 
 typedef	struct	s_data
@@ -142,6 +148,7 @@ void			shader_del(t_shader *shader);
 GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
+void			shader_update(t_transf *transf, t_shader *shader);
 
 void			mesh_init(t_vertex *vertices, unsigned int num, t_mesh * mesh);
 void			mesh_del(t_mesh *mesh);
@@ -168,11 +175,12 @@ t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
 
 t_mat4			mat4_scale(t_vector sc);
-t_mat4			mat4_rotateX(t_vector ang);
-t_mat4			mat4_rotateY(t_vector ang);
-t_mat4			mat4_rotateZ(t_vector ang);
+t_mat4			mat4_rotateX(float ang);
+t_mat4			mat4_rotateY(float ang);
+t_mat4			mat4_rotateZ(float ang);
 t_mat4			mat4_translate(t_vector pos);
 t_mat4 			mat4_mult(t_mat4 a, t_mat4 b);
+t_mat4			mat4_transpose(t_mat4 src);
 
 t_vertex		vertex_init(t_vector pos, t_coord uv);
 t_coord			vertex_getUV(t_vertex vertex);

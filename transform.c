@@ -18,13 +18,15 @@ void	transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf)
 t_mat4	transform_getModel(t_transf *tf)
 {
 	t_model model;
-//to do assign
-	model.pos = mat4_translate(tf->pos);
-	model.rotX = mat4_rotateX(vinit(1.0, 0.0, 0.0));
-	model.rotY = mat4_rotateY(vinit(0.0, 1.0, 0.0));
-	model.rotZ = mat4_rotateZ(vinit(0.0, 0.0, 1.0));
-	model.scale = mat4_scale(vinit(1.0, 1.0, 1.0));
 
-	model.rot = mat4_mul(mat4_mul(model.rotZ, model.rotY), model.rotZ);
- 	return(mat4_mul(mat4_mul(model.pos, model.rot), model.scale));
+	model.pos = mat4_translate(tf->pos);
+	model.rotX = mat4_rotateX(tf->rot.x);
+	model.rotY = mat4_rotateY(tf->rot.y);
+	model.rotZ = mat4_rotateZ(tf->rot.z);
+	model.scale = mat4_scale(tf->scale);
+
+	model.rot = mat4_mult(mat4_mult(model.rotX, model.rotY), model.rotZ);
+ 	return (mat4_mult(mat4_mult(model.pos, model.rot), model.scale));
+ 	// return (mat4_mult(model.pos, model.scale));
+ 	// return (model.pos);
 }

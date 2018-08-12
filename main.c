@@ -18,7 +18,7 @@ void	quit_scop(t_data *d)
 	SDL_Quit();
 }
 
-int		handleEvent(SDL_Event event)
+int		handleEvent(SDL_Event event, t_transf *tf)
 {
 	switch(event.type) 
 	{
@@ -30,8 +30,80 @@ int		handleEvent(SDL_Event event)
 			switch (event.key.keysym.sym)
 			{
 				case 	SDLK_ESCAPE: 
-				{ 
+				{
 					return 0;
+				}
+				case 	SDLK_w: 
+				{ 
+					write(1,"w\n",2);
+					tf->pos.x += 0.1;
+					break;
+				}
+				case 	SDLK_s: 
+				{
+					write(1,"s\n",2);
+					tf->pos.x -= 0.1;
+					break;
+				}
+				case	SDLK_a: 
+				{
+					write(1,"a\n",2);
+					tf->pos.y += 0.1;;
+					break;
+				}
+				case	SDLK_d: 
+				{
+					write(1,"d\n",2);
+					tf->pos.y -= 0.1;;
+					break;
+				}
+				case	SDLK_q: 
+				{
+					write(1,"q\n",2);
+					tf->scale = vmul(tf->scale, 0.5);
+					break;
+				}
+				case	SDLK_e: 
+				{
+					write(1,"e\n",2);
+					tf->scale = vmul(tf->scale, 1.5);
+					break;
+				}
+				case	SDLK_z: 
+				{
+					write(1,"z\n",2);
+					tf->rot.y += 0.1;
+					break;
+				}
+				case	SDLK_x: 
+				{
+					write(1,"x\n",2);
+					tf->rot.y -= 0.1;
+					break;
+				}
+				case	SDLK_c:
+				{
+					write(1,"c\n",2);
+					tf->rot.z += 0.1;
+					break;
+				}
+				case	SDLK_v: 
+				{
+					write(1,"v\n",2);
+					tf->rot.z -= 0.1;
+					break;
+				}
+				case	SDLK_b:
+				{
+					write(1,"b\n",2);
+					tf->rot.x += 0.1;
+					break;
+				}
+				case	SDLK_n: 
+				{
+					write(1,"n\n",2);
+					tf->rot.x -= 0.1;
+					break;
 				}
 			}
 	}
@@ -45,10 +117,11 @@ int main(int argc, char const **argv)
 	t_mesh 			mesh;
 	t_shader		shader;
 	t_texture		texture;
+	t_transf		transform;
 
-	t_vertex vertices[] = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 1.0 - 0.0)),
-							vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0 - 1.0)),
-							vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 1.0 - 0.0))};
+	t_vertex vertices[] = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
+							vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0)),
+							vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 0.0))};
 
 	data_init(&d);
 	SDL_Init(SDL_INIT_EVERYTHING);
@@ -69,6 +142,7 @@ int main(int argc, char const **argv)
 	{
 		printf("error?");
 	}
+	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
 	texture_init("resources/pusheen.jpg", &texture);
 	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
@@ -76,11 +150,12 @@ int main(int argc, char const **argv)
 	while (d.run)
 	{
 		SDL_PollEvent(&e);
-		d.run = handleEvent(e);
+		d.run = handleEvent(e, &transform);
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader_bind(&shader);
 		texture_bind(0, &texture);
+		shader_update(&transform, &shader);
 		mesh_draw(&mesh);
 		update(&d);
 	}

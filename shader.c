@@ -21,6 +21,7 @@ void shader_init(char *filename, t_shader *shader)
 	//Checkshader;
 	glValidateProgram(shader->program);
 	//Checkshader;
+	shader->unifs[TRANSFORM_U] = glGetUniformLocation(shader->program, "transform");
 }
 
 void shader_del(t_shader *shader)
@@ -55,9 +56,15 @@ GLuint shader_create(char *text, GLenum shaderType)
 	return shader;
 }
 
-void shader_bind(t_shader *shader)
+void	shader_bind(t_shader *shader)
 {
 	glUseProgram(shader->program);
+}
+
+void	shader_update(t_transf *transf, t_shader *shader)
+{
+	t_mat4 model = transform_getModel(transf);
+	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &model.a[0][0]);
 }
 
 char *shader_load(const char *filename)

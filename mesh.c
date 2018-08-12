@@ -30,7 +30,7 @@ void mesh_init(t_vertex *vertices, unsigned int num, t_mesh *mesh)
 		// printf("Pos: %d : x: %f y: %f z:  %f size: %i\n", i, poss[i * 3 + 0], poss[i * 3 + 1], poss[i * 3 + 2] , sizeof(poss[i]));
 		i++;
 	}
-	write(1,"ms\n",3);
+	
 	mesh->drawCount = num;
 	glGenVertexArrays(1, &mesh->vertexArrObj);
 	glBindVertexArray(mesh->vertexArrObj);
