@@ -86,14 +86,14 @@ typedef	struct	s_vertex
 	t_coord		uv;
 }				t_vertex;
 
-typedef	struct	s_objindex
+typedef	struct	s_objIndex
 {
 	t_vector		positions;
 	t_vector		texCoords;
 	t_vector		normals;
 	unsigned int	*indices;
 	unsigned int	numIndices;
-}				t_obj;
+}				t_objIndexj;
 
 typedef	struct	s_mesh
 {
@@ -215,5 +215,6 @@ t_coord			cnorm(t_coord v1);
 float			cdot(t_coord v1, t_coord v2);
 float			clen(t_coord v1);
 
+float			ft_atof(char *str);
 void			quit_scop(t_data *d);
 #endif

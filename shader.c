@@ -75,8 +75,6 @@ char *shader_load(const char *filename)
 
 	text = ft_strnew(1);
 	fd = open(filename, O_RDONLY);
-		if (fd < 0)
-			exit(0);
 	while (get_next_line(fd, &line) == 1)
 	{
 		line = ft_strjoin(line, "\n");
@@ -84,6 +82,6 @@ char *shader_load(const char *filename)
 		free(line);
 	}
 	// printf("%s\n", text);
-	// close(fd);
+	close(fd);
 	return text;
 }
