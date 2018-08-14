@@ -57,6 +57,26 @@ t_vector	vnorm(t_vector v1)
 	return (v1);
 }
 
+float		vdot(t_vector v1, t_vector v2)
+{
+	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
+}
+
+float		vlen(t_vector v1)
+{
+	return (sqrt((v1.x * v1.x) + (v1.y * v1.y) + (v1.z * v1.z)));
+}
+
+t_vector	vcross(t_vector v1, t_vector v2)
+{
+	t_vector vec;
+
+	vec.x = v1.y * v2.z - v1.z * v2.y;
+	vec.y = v1.z * v2.x - v1.x * v2.z;
+	vec.z = v1.x * v2.y - v1.y * v2.x;
+	return (vec);
+}
+
 t_vertex	vertex_init(t_vector pos, t_coord uv)
 {
 	t_vertex	vert;
@@ -89,12 +109,4 @@ t_coord		vertex_getUV(t_vertex vertex)
 }
 
 
-float		vdot(t_vector v1, t_vector v2)
-{
-	return ((v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z));
-}
 
-float		vlen(t_vector v1)
-{
-	return (sqrt((v1.x * v1.x) + (v1.y * v1.y) + (v1.z * v1.z)));
-}

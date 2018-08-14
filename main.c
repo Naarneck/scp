@@ -18,7 +18,7 @@ void	quit_scop(t_data *d)
 	SDL_Quit();
 }
 
-int		handleEvent(SDL_Event event, t_transf *tf)
+int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 {
 	switch(event.type) 
 	{
@@ -105,6 +105,18 @@ int		handleEvent(SDL_Event event, t_transf *tf)
 					tf->rot.x -= 0.1;
 					break;
 				}
+				case	SDLK_f: 
+				{
+					write(1,"f\n",2);
+					cam->pos.x -= 0.1;
+					break;
+				}
+				case	SDLK_g: 
+				{
+					write(1,"g\n",2);
+					cam->pos.x += 0.1;
+					break;
+				}
 			}
 	}
 	return 1;
@@ -118,11 +130,11 @@ int main(int argc, char const **argv)
 	t_shader		shader;
 	t_texture		texture;
 	t_transf		transform;
-
-	t_vertex vertices[] = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
+	t_cam 		camera; 
+	t_vertex vertices[]		 = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
 							vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0)),
 							vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 0.0))};
-
+	unsigned int indices[] = {0, 1, 2};
 	data_init(&d);
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -142,20 +154,21 @@ int main(int argc, char const **argv)
 	{
 		printf("error?");
 	}
+	cam_init(vinit(0.0, 0.0, -4.0), 66.0f, (float)((float)WIDTH / (float)HEIGHT), &camera);
 	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
 	texture_init("resources/pusheen.jpg", &texture);
-	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), &mesh);
+	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	
 	while (d.run)
 	{
 		SDL_PollEvent(&e);
-		d.run = handleEvent(e, &transform);
+		d.run = handleEvent(e, &transform, &camera);
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader_bind(&shader);
 		texture_bind(0, &texture);
-		shader_update(&transform, &shader);
+		shader_update(&transform, &shader, &camera);
 		mesh_draw(&mesh);
 		update(&d);
 	}

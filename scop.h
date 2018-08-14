@@ -13,10 +13,11 @@
 
 # define WIDTH 800
 # define HEIGHT 800
-# define NUM_BUFFERS 2
+# define NUM_BUFFERS 3
+# define INDEX_VB 2
 # define TEXCOORD_VB 1
 # define POSITION_VB 0
-
+ 
 # define NUM_SHADERS 2
 
 # define NUM_UNIFORMS 1
@@ -85,6 +86,14 @@ typedef	struct	s_vertex
 	t_coord		uv;
 }				t_vertex;
 
+typedef	struct	s_objindex
+{
+	t_vector		positions;
+	t_vector		texCoords;
+	t_vector		normals;
+	unsigned int	*indices;
+	unsigned int	numIndices;
+}				t_obj;
 
 typedef	struct	s_mesh
 {
@@ -119,8 +128,14 @@ typedef	struct	s_texture
 
 typedef	struct	s_cam
 {
+	t_mat4		perspective;
+	// float		zNear;
+	// float		zNear;
+	float		fov;
+	float		aspect;
 	t_vector	pos;
-	t_vector	viewDir;
+	t_vector	forward;
+	t_vector	up;
 }				t_cam;
 
 typedef	struct	s_model
@@ -143,14 +158,19 @@ typedef	struct	s_transf
 void			transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf);
 t_mat4			transform_getModel(t_transf *tf);
 
+void			cam_init(t_vector pos, float fov, float aspect, t_cam *cam);
+t_mat4			cam_getViewProj(t_cam *cam);
+t_mat4			cam_lookAt(t_vector pos, t_vector dir, t_vector up);
+t_mat4			cam_perspective(float fov, float aspect, float zNear, float zFar);
+
 void			shader_init(char *filename, t_shader *shader);
 void			shader_del(t_shader *shader);
 GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
-void			shader_update(t_transf *transf, t_shader *shader);
-
-void			mesh_init(t_vertex *vertices, unsigned int num, t_mesh * mesh);
+void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
+void 			mesh_init(t_vertex *vertices, unsigned int numVerices, unsigned int *indices, unsigned int numIndices, t_mesh *mesh);
+// void			mesh_init(t_vertex *vertices, unsigned int num, t_mesh * mesh);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
 
@@ -173,6 +193,7 @@ t_vector		vmul(t_vector v1, float l);
 float			vlen(t_vector v1);
 t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
+t_vector		vcross(t_vector v1, t_vector v2);
 
 t_mat4			mat4_scale(t_vector sc);
 t_mat4			mat4_rotateX(float ang);
@@ -194,5 +215,5 @@ t_coord			cnorm(t_coord v1);
 float			cdot(t_coord v1, t_coord v2);
 float			clen(t_coord v1);
 
-void			quit_scop(t_data	*d);
+void			quit_scop(t_data *d);
 #endif
