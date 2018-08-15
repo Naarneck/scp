@@ -130,11 +130,17 @@ int main(int argc, char const **argv)
 	t_shader		shader;
 	t_texture		texture;
 	t_transf		transform;
-	t_cam 		camera; 
-	t_vertex vertices[]		 = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
-							vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0)),
-							vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 0.0))};
-	unsigned int indices[] = {0, 1, 2};
+	t_cam 			camera;
+	t_objIndex		obji;
+
+	// t_vertex 		vertices[]		 = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
+	// 						vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0)),
+	// 						vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 0.0))};
+	// unsigned int 	indices[] = {0, 1, 2};
+
+	t_vertex 		*vertices;
+	unsigned int 	*indices;
+
 	data_init(&d);
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -152,16 +158,21 @@ int main(int argc, char const **argv)
 
 	if(d.status != GLEW_OK)
 	{
-		printf("error?");
+		printf("error?\n");
 	}
-	cam_init(vinit(0.0, 0.0, -4.0), 66.0f, (float)((float)WIDTH / (float)HEIGHT), &camera);
+	obj_loadFile("resources/coq.obj", &obji);
+	vertices = obji.vertices;
+	indices = obji.indices;
+	cam_init(vinit(0.0, 0.0, -1.0), 66.0f, (float)((float)WIDTH / (float)HEIGHT), &camera);
 	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
 	texture_init("resources/pusheen.jpg", &texture);
-	mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
-	
+	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
+	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);
+	mesh_init(vertices, obji.numPositions, indices, obji.numIndices, &mesh);
 	while (d.run)
 	{
+		// printf("kek\n");
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e, &transform, &camera);
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);

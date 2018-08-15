@@ -74,7 +74,6 @@ typedef	struct	s_coord
 	float		y;
 }				t_coord;
 
-
 typedef	struct	s_mat4
 {
 	float		a[4][4]; //wtf 
@@ -88,12 +87,18 @@ typedef	struct	s_vertex
 
 typedef	struct	s_objIndex
 {
-	t_vector		positions;
-	t_vector		texCoords;
-	t_vector		normals;
+	t_vector		*positions;
+	t_vector		*texCoords;
+	t_vertex		*vertices; //test
+	t_vector		*normals;
 	unsigned int	*indices;
 	unsigned int	numIndices;
-}				t_objIndexj;
+	unsigned int	numTex;
+	unsigned int	numNormals;
+	unsigned int	numPositions;
+	unsigned int	numLines;
+	char			*text;
+}				t_objIndex;
 
 typedef	struct	s_mesh
 {
@@ -154,6 +159,9 @@ typedef	struct	s_transf
 	t_vector	rot;
 	t_vector	scale;
 }				t_transf;
+
+void			obj_checkFile(const char *filename, t_objIndex *obji);
+void			obj_loadFile(const char *filename, t_objIndex *obji);
 
 void			transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf);
 t_mat4			transform_getModel(t_transf *tf);
