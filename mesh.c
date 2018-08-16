@@ -58,8 +58,6 @@ void mesh_draw(t_mesh *mesh)
 	glBindVertexArray(0);
 }
 
-
-
 /*
 	x,y,z;
 	x,y,z;

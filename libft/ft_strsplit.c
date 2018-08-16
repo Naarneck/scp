@@ -68,3 +68,33 @@ char				**ft_strsplit(char const *s, char c)
 	str[j] = NULL;
 	return (str);
 }
+
+char				**ft_strsplitnum(char const *s, char c, int *num)
+{
+	size_t	i;
+	size_t	j;
+	char	**str;
+
+	i = 0;
+	j = 0;
+	*num = 0;
+	if (!s)
+		return (NULL);
+	if (!(str = (char **)malloc(sizeof(char*) * count_words(s, c) + 1)))
+		return (NULL);
+	while (s[i] != '\0')
+	{
+		if (s[i] != c)
+		{
+			if (!(str[j] = ft_strsub(s, i, end_index(s, i, c) - i)))
+				return (NULL);
+			i = end_index(s, i, c);
+			j++;
+		}
+		if (s[i] != '\0')
+			i++;
+	}
+	str[j] = NULL;
+	*num = j;
+	return (str);
+}

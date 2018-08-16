@@ -97,7 +97,6 @@ typedef	struct	s_objIndex
 	unsigned int	numNormals;
 	unsigned int	numPositions;
 	unsigned int	numLines;
-	char			*text;
 }				t_objIndex;
 
 typedef	struct	s_mesh
@@ -223,6 +222,7 @@ t_coord			cnorm(t_coord v1);
 float			cdot(t_coord v1, t_coord v2);
 float			clen(t_coord v1);
 
+char			**ft_strsplitnum(char const *s, char c, int *num);
 float			ft_atof(char *str);
 void			quit_scop(t_data *d);
 #endif

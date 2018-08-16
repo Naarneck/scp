@@ -148,6 +148,7 @@ int main(int argc, char const **argv)
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+	// SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	d.window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_CENTERED,
@@ -160,7 +161,11 @@ int main(int argc, char const **argv)
 	{
 		printf("error?\n");
 	}
-	obj_loadFile("resources/coq.obj", &obji);
+	// glEnable(GL_DEPTH_TEST);
+	// glEnable(GL_CULL_FACE);
+	// glCullFace(GL_BACK); 
+	//teapot teapot2 uno drink cat bird
+	obj_loadFile("resources/bird.obj", &obji);
 	vertices = obji.vertices;
 	indices = obji.indices;
 	cam_init(vinit(0.0, 0.0, -1.0), 66.0f, (float)((float)WIDTH / (float)HEIGHT), &camera);
@@ -176,6 +181,7 @@ int main(int argc, char const **argv)
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e, &transform, &camera);
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
+		// glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT);
 		shader_bind(&shader);
 		texture_bind(0, &texture);
