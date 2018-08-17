@@ -96,7 +96,7 @@ typedef	struct	s_objIndex
 	unsigned int	numTex;
 	unsigned int	numNormals;
 	unsigned int	numPositions;
-	unsigned int	numLines;
+	// unsigned int	numLines;
 }				t_objIndex;
 
 typedef	struct	s_mesh

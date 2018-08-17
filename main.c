@@ -60,13 +60,13 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 				case	SDLK_q: 
 				{
 					write(1,"q\n",2);
-					tf->scale = vmul(tf->scale, 0.5);
+					tf->scale = vmul(tf->scale, 0.25);
 					break;
 				}
 				case	SDLK_e: 
 				{
 					write(1,"e\n",2);
-					tf->scale = vmul(tf->scale, 1.5);
+					tf->scale = vmul(tf->scale, 1.25);
 					break;
 				}
 				case	SDLK_z: 
@@ -166,27 +166,37 @@ int main(int argc, char const **argv)
 	// glCullFace(GL_BACK); 
 	//teapot teapot2 uno drink cat bird
 	obj_loadFile("resources/bird.obj", &obji);
+	write(1,"obj loaded\n",11);
 	vertices = obji.vertices;
 	indices = obji.indices;
 	cam_init(vinit(0.0, 0.0, -1.0), 66.0f, (float)((float)WIDTH / (float)HEIGHT), &camera);
 	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
+	write(1,"shader loaded\n",14);
 	texture_init("resources/pusheen.jpg", &texture);
+	write(1,"texture loaded\n",15);
 	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);
 	mesh_init(vertices, obji.numPositions, indices, obji.numIndices, &mesh);
+	write(1,"mesh initialized\n",17);
 	while (d.run)
 	{
+		write(1,"loop started\n",14);
 		// printf("kek\n");
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e, &transform, &camera);
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 		// glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT);
+		write(1,"loop started\n",14);
 		shader_bind(&shader);
+		write(1,"shader binded\n",14);
 		texture_bind(0, &texture);
+		write(1,"texture binded\n",15);
 		shader_update(&transform, &shader, &camera);
+		write(1,"texture updated\n",16);
 		mesh_draw(&mesh);
+		write(1,"mesh draw\n",10);
 		update(&d);
 	}
 	shader_del(&shader);
