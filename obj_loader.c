@@ -9,23 +9,27 @@ float		ft_atof(char *str)
 	int		div_part;
 	int		mod_part;
 	char	*temp;
+	int 	minus;
 
 	i = 0;
 	n = 0.0;
 	while (str[i] != '.' && str[i] != ' ' && str[i] != '\0' && str[i] != '\n')
 		i++;
 	temp = ft_strsub(str, 0, i);
-	div_part = ft_atoi(temp);
+	minus = 1;
+	if(str[0] == '-')
+		minus = -1;
+	div_part = abs(ft_atoi(temp));
 	n += (float)div_part;
 	free(temp);
 	temp = ft_strsub(str, i + 1, ft_strlen(str) - i);
 	mod_part = ft_atoi(temp);
-	if (div_part >= 0)
+	// if (div_part > 0)
 		n += pow(0.1, ft_strlen(str) - i - 1) * (float)mod_part;
-	else
-		n -= pow(0.1, ft_strlen(str) - i - 1) * (float)mod_part;
+	// else
+		// n -= pow(0.1, ft_strlen(str) - i - 1) * (float)mod_part;
 	free(temp);
-	return (n);
+	return (n * minus);
 }
 
 
@@ -65,8 +69,8 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 			else if (line_arr[0][0] == 'v')
 				obji->numPositions++;
 		}
-		printf("i:%u numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",i,
-		obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices);
+		// printf("i:%u numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",i,
+		// obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices);
 		while (line_arr[++i])
 			free(line_arr[i]);
 		free(line_arr);
@@ -94,6 +98,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	obji->indices = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
 	obji->numIndices = 0;
 	obji->numPositions = 0;
+	obji->numTex = 0;
 	fd = open(filename, O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
@@ -104,7 +109,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 		{
 			if (line_arr[0][0] == 'f')
 			{
-				//extract texture coord and normals here
+				//extract texture normals here
 				i = 0;
 				while (i < num - 3)
 				{
@@ -120,13 +125,19 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				obji->vertices[obji->numPositions].pos.x = ft_atof(line_arr[1]);
 				obji->vertices[obji->numPositions].pos.y = ft_atof(line_arr[2]);
 				obji->vertices[obji->numPositions].pos.z = ft_atof(line_arr[3]);
-				obji->vertices[obji->numPositions].uv.x = 0.1 + obji->numPositions * 0.001;
-				obji->vertices[obji->numPositions].uv.y = 0.1 + obji->numPositions * 0.001;
-				printf("pos: x:%f y:%f z:%f \n", 
-				obji->vertices[obji->numPositions].pos.x,
-				obji->vertices[obji->numPositions].pos.y,
-				obji->vertices[obji->numPositions].pos.z);
+				// printf("pos: x:%f y:%f z:%f \n", 
+				// obji->vertices[obji->numPositions].pos.x,
+				// obji->vertices[obji->numPositions].pos.y,
+				// obji->vertices[obji->numPositions].pos.z);
 				obji->numPositions++;
+			}
+			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
+			{
+				// move up in if V
+				obji->vertices[obji->numTex].uv.x = ft_atof(line_arr[1]);
+				obji->vertices[obji->numTex].uv.y = ft_atof(line_arr[2]);
+				obji->numTex++;
+	printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 			}
 		}
 		i = -1;

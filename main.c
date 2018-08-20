@@ -60,7 +60,7 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 				case	SDLK_q: 
 				{
 					write(1,"q\n",2);
-					tf->scale = vmul(tf->scale, 0.25);
+					tf->scale = vmul(tf->scale, 0.75);
 					break;
 				}
 				case	SDLK_e: 
@@ -148,7 +148,7 @@ int main(int argc, char const **argv)
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
-	// SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
 	d.window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_CENTERED,
@@ -161,12 +161,14 @@ int main(int argc, char const **argv)
 	{
 		printf("error?\n");
 	}
-	// glEnable(GL_DEPTH_TEST);
-	// glEnable(GL_CULL_FACE);
-	// glCullFace(GL_BACK); 
-	//teapot teapot2 uno drink cat bird
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK); 
+	//teapot teapot2 uno drink cat bird Lumia_650 CSH/csh
 	obj_loadFile("resources/bird.obj", &obji);
 	write(1,"obj loaded\n",11);
+	printf("numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",
+		obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	vertices = obji.vertices;
 	indices = obji.indices;
 	cam_init(vinit(0.0, 0.0, -1.0), 66.0f, (float)((float)WIDTH / (float)HEIGHT), &camera);
@@ -177,7 +179,7 @@ int main(int argc, char const **argv)
 	write(1,"texture loaded\n",15);
 	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);
-	mesh_init(vertices, obji.numPositions, indices, obji.numIndices, &mesh);
+	mesh_init(&mesh, obji);
 	write(1,"mesh initialized\n",17);
 	while (d.run)
 	{
@@ -186,8 +188,8 @@ int main(int argc, char const **argv)
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e, &transform, &camera);
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
-		// glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
+		// glClear(GL_COLOR_BUFFER_BIT);
 		write(1,"loop started\n",14);
 		shader_bind(&shader);
 		write(1,"shader binded\n",14);

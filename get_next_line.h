@@ -12,7 +12,7 @@
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-# define BUFF_SIZE 1
+# define BUFF_SIZE 2048
 # define NUM_FILES 4096
 # include <fcntl.h>
 # include <sys/types.h>

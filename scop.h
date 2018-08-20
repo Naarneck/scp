@@ -11,8 +11,8 @@
 # include "get_next_line.h"
 # include <unistd.h>
 
-# define WIDTH 800
-# define HEIGHT 800
+# define WIDTH 1000
+# define HEIGHT 1000
 # define NUM_BUFFERS 3
 # define INDEX_VB 2
 # define TEXCOORD_VB 1
@@ -92,6 +92,8 @@ typedef	struct	s_objIndex
 	t_vertex		*vertices; //test
 	t_vector		*normals;
 	unsigned int	*indices;
+	unsigned int	*indTex;
+	unsigned int	*indNorm;
 	unsigned int	numIndices;
 	unsigned int	numTex;
 	unsigned int	numNormals;
@@ -176,7 +178,7 @@ GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
-void 			mesh_init(t_vertex *vertices, unsigned int numVerices, unsigned int *indices, unsigned int numIndices, t_mesh *mesh);
+void 			mesh_init(t_mesh *mesh, t_objIndex obji);
 // void			mesh_init(t_vertex *vertices, unsigned int num, t_mesh * mesh);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
