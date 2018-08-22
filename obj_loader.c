@@ -1,6 +1,52 @@
 #include "scop.h"
 
 
+char *getUV(const char *str)
+{
+	int i;
+	int first_slash;
+	int sec_slash;
+
+	first_slash = 0;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!first_slash && str[i] == '/')
+
+			first_slash = i;
+		else if (first_slash && str[i] == '/')
+		{
+			sec_slash = i;
+			// printf("Uv( %s )", ft_strsub(str, first_slash + 1, sec_slash - first_slash));
+			return (ft_strsub(str, first_slash + 1, sec_slash - first_slash));
+		}
+		i++;
+	}
+	return (NULL);
+}
+
+char *getNormal(const char *str)
+{
+	int i;
+	int first_slash;
+	int sec_slash;
+
+	first_slash = 0;
+	i = 0;
+	while (str[i] != '\0')
+	{
+		if (!first_slash && str[i] == '/')
+			first_slash = i;
+		else if (first_slash && str[i] == '/')
+		{
+			sec_slash = i;
+			// printf("Norm( %s )", ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash));
+			return (ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash));
+		}
+		i++;
+	}
+	return (NULL);
+}
 
 float		ft_atof(char *str)
 {
@@ -32,7 +78,6 @@ float		ft_atof(char *str)
 	return (n * minus);
 }
 
-
 void		obj_checkFile(const char *filename, t_objIndex *obji)
 {
 	int		fd;
@@ -41,6 +86,8 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 	int 	i;
 	int 	num;
 
+	obji->is_uvs = 0;
+	obji->is_normals = 0;
 	obji->numIndices = 0;
 	obji->numNormals = 0;
 	obji->numTex = 0;
@@ -61,6 +108,10 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 			if (line_arr[0][0] == 'f')
 			{
 				obji->numIndices += (num - 3);
+				if (ft_atoi(getUV(line_arr[1])) > 0 )
+					obji->is_uvs = 1;
+				if (ft_atoi(getNormal(line_arr[1])) > 0)
+					obji->is_normals = 1;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
 				obji->numTex++;
@@ -95,7 +146,11 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 
 	obj_checkFile(filename, obji);
 	obji->vertices = (t_vertex *)malloc(sizeof(t_vertex) * obji->numPositions);
-	obji->indices = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
+	obji->posid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
+	if (obji->is_uvs)
+		obji->uvsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
+	if (obji->is_normals)
+		obji->normalsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
 	obji->numIndices = 0;
 	obji->numPositions = 0;
 	obji->numTex = 0;
@@ -113,11 +168,26 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				i = 0;
 				while (i < num - 3)
 				{
-					obji->indices[obji->numIndices] = ft_atoi(line_arr[1]) - 1;
-					obji->indices[++obji->numIndices] = ft_atoi(line_arr[2 + i]) - 1;
-					obji->indices[++obji->numIndices] = ft_atoi(line_arr[3 + i]) - 1;
-					i++;
-					obji->numIndices++;
+					
+					obji->posid[obji->numIndices] = ft_atoi(line_arr[1]) - 1;
+					if (obji->is_uvs)
+						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[1])) - 1;
+					if (obji->is_normals)
+						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[1])) - 1;
+
+					obji->posid[++obji->numIndices] = ft_atoi(line_arr[2 + i]) - 1;
+					if (obji->is_uvs)
+						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[2 + i])) - 1;
+					if (obji->is_normals)
+						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[2 + i])) - 1;
+
+					obji->posid[++obji->numIndices] = ft_atoi(line_arr[3 + i]) - 1;
+					if (obji->is_uvs)
+						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[3 + i])) - 1;
+					if (obji->is_normals)
+						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[3 + i])) - 1;
+				i++;
+				obji->numIndices++;
 				}
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
@@ -137,7 +207,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				obji->vertices[obji->numTex].uv.x = ft_atof(line_arr[1]);
 				obji->vertices[obji->numTex].uv.y = ft_atof(line_arr[2]);
 				obji->numTex++;
-	printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
+				// printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 			}
 		}
 		i = -1;

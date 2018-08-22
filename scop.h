@@ -13,10 +13,12 @@
 
 # define WIDTH 1000
 # define HEIGHT 1000
-# define NUM_BUFFERS 3
-# define INDEX_VB 2
+# define NUM_BUFFERS 2
+// # define INDEX_TB 3
+// # define INDEX_VB 2
 # define TEXCOORD_VB 1
 # define POSITION_VB 0
+
  
 # define NUM_SHADERS 2
 
@@ -85,25 +87,40 @@ typedef	struct	s_vertex
 	t_coord		uv;
 }				t_vertex;
 
+// typedef	struct	s_indices
+// {
+// 	unsigned int	pos;
+// 	unsigned int	uvs;
+// 	unsigned int	norms;
+// }				t_indices;
+
 typedef	struct	s_objIndex
 {
-	t_vector		*positions;
-	t_vector		*texCoords;
+	// t_vector		*positions;
+	// t_coord			*texCoords;
 	t_vertex		*vertices; //test
 	t_vector		*normals;
-	unsigned int	*indices;
-	unsigned int	*indTex;
-	unsigned int	*indNorm;
+	// t_indices		*indices;
+	unsigned int	*posid;
+	unsigned int	*uvsid;
+	unsigned int	*normalsid;
+
 	unsigned int	numIndices;
 	unsigned int	numTex;
 	unsigned int	numNormals;
 	unsigned int	numPositions;
-	// unsigned int	numLines;
+	unsigned int	is_uvs;
+	unsigned int	is_normals;
 }				t_objIndex;
 
 typedef	struct	s_mesh
 {
-	t_vertex*		vertices;
+	// t_vertex		*vertices;
+
+	t_vector		*positions;
+	t_coord			*uvs;
+	t_vector		*normals;
+
 	unsigned int	numVert;
 	GLuint			vertexArrObj;
 	GLuint			vertexArrBuf[NUM_BUFFERS];
@@ -178,10 +195,11 @@ GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
+
 void 			mesh_init(t_mesh *mesh, t_objIndex obji);
-// void			mesh_init(t_vertex *vertices, unsigned int num, t_mesh * mesh);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
+void			mesh_index_obj(t_mesh *mesh, t_objIndex obji);
 
 void			texture_del(t_texture *texture);
 void			texture_bind(unsigned int unit, t_texture *texture);
