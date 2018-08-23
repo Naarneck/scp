@@ -63,8 +63,8 @@ void	shader_bind(t_shader *shader)
 
 void	shader_update(t_transf *transf, t_shader *shader, t_cam *camera)
 {
-	// t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
-	t_mat4 model = transform_getModel(transf);
+	t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
+	// t_mat4 model = transform_getModel(transf);
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &model.a[0][0]);
 }
 

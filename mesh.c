@@ -4,15 +4,21 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex obji)
 {
 	int i;
 
+
 	mesh->positions = (t_vector *)malloc(sizeof(t_vector) * obji.numIndices);
 	mesh->uvs = (t_coord *)malloc(sizeof(t_coord) * obji.numIndices);
 	mesh->normals = (t_vector *)malloc(sizeof(t_vector) * obji.numIndices);
 	i = 0;
+	// printf("d: %d\n", obji.numIndices);
 	while (i < obji.numIndices)
 	{
+
+		// printf("%d: ", i);
+		// printf("f:  %d / %d / %d\n", obji.posid[i], obji.uvsid[i], obji.normalsid[i]);
 		mesh->positions[i] = obji.v[obji.posid[i]];
 		// mesh->uvs[i] = obji.vt[obji.uvsid[i]];
 		mesh->uvs[i] = cinit(obji.vt[obji.uvsid[i]].x, 1.0 - obji.vt[obji.uvsid[i]].y);
+		// printf("mew\n");
 		mesh->normals[i] = vinit(0,0,0);
 		i++;
 	}
@@ -26,6 +32,7 @@ void mesh_init(t_mesh *mesh, t_objIndex obji)
 	int i;
 
 	i = 0;
+	printf("f:  %d / %d / %d\n", obji.posid[8], obji.uvsid[8], obji.normalsid[8]);
 	mesh_index_obj(mesh, obji);
 	// poss = (t_vector *)malloc(sizeof(t_vector) * obji.numPositions);
 	// uvs = (t_coord *)malloc(sizeof(t_coord) * obji.numPositions);

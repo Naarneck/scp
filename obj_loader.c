@@ -120,8 +120,8 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 			else if (line_arr[0][0] == 'v')
 				obji->numPositions++;
 		}
-		printf(" numNormals: %u numPositions: %u numTex: %u numIndices: %u  is_normals: %d is_uvs: %d\n",
-		obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices, obji->is_normals, obji->is_uvs);
+		// printf(" numNormals: %u numPositions: %u numTex: %u numIndices: %u  is_normals: %d is_uvs: %d\n",
+		// obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices, obji->is_normals, obji->is_uvs);
 		while (line_arr[++i])
 			free(line_arr[i]);
 		free(line_arr);
@@ -169,7 +169,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				i = 0;
 				while (i < num - 3)
 				{
-					
+					// printf("i: %d\n", obji->numIndices);
 					obji->posid[obji->numIndices] = ft_atoi(line_arr[1]) - 1;
 					if (obji->is_uvs)
 						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[1])) - 1;
@@ -180,8 +180,8 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 					else
 						obji->normalsid[obji->numIndices] = 0;
 
-
 					obji->posid[++obji->numIndices] = ft_atoi(line_arr[2 + i]) - 1;
+					// printf("in: %d\n", obji->numIndices);
 					if (obji->is_uvs)
 						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[2 + i])) - 1;
 					else
@@ -190,9 +190,9 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[2 + i])) - 1;
 					else
 						obji->normalsid[obji->numIndices] = 0;
-
-
+					
 					obji->posid[++obji->numIndices] = ft_atoi(line_arr[3 + i]) - 1;
+					// printf("ind: %d\n", obji->numIndices);
 					if (obji->is_uvs)
 						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[3 + i])) - 1;
 					else
@@ -202,7 +202,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 					else
 						obji->normalsid[obji->numIndices] = 0;
 				i++;
-				obji->numIndices++;
+				++obji->numIndices;
 				}
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
@@ -232,5 +232,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 		free(line);
 	}
 	// printf("obj loaded\n");
-	// printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
+	// printf("f:  %d / %d / %d\n", obji->posid[8], obji->uvsid[8], obji->normalsid[8]);
+	// 	printf("f:  %d / %d / %d\n", obji->posid[9], obji->uvsid[9], obji->normalsid[9]);
+	printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 }
