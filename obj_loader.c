@@ -1,7 +1,7 @@
 #include "scop.h"
 
 
-char *getUV(const char *str)
+char *getUV(char *str)
 {
 	int i;
 	int first_slash;
@@ -22,10 +22,10 @@ char *getUV(const char *str)
 		}
 		i++;
 	}
-	return (NULL);
+	return (str);
 }
 
-char *getNormal(const char *str)
+char *getNormal(char *str)
 {
 	int i;
 	int first_slash;
@@ -45,7 +45,7 @@ char *getNormal(const char *str)
 		}
 		i++;
 	}
-	return (NULL);
+	return (str);
 }
 
 float		ft_atof(char *str)
@@ -120,8 +120,8 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 			else if (line_arr[0][0] == 'v')
 				obji->numPositions++;
 		}
-		// printf("i:%u numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",i,
-		// obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices);
+		printf(" numNormals: %u numPositions: %u numTex: %u numIndices: %u  is_normals: %d is_uvs: %d\n",
+		obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices, obji->is_normals, obji->is_uvs);
 		while (line_arr[++i])
 			free(line_arr[i]);
 		free(line_arr);
@@ -145,11 +145,12 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 //check 1000 other stuff..
 
 	obj_checkFile(filename, obji);
-	obji->vertices = (t_vertex *)malloc(sizeof(t_vertex) * obji->numPositions);
+	obji->v = (t_vector *)malloc(sizeof(t_vector) * obji->numPositions);
+	obji->vt = (t_coord *)malloc(sizeof(t_coord) * obji->numTex);
 	obji->posid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
-	if (obji->is_uvs)
+	// if (obji->is_uvs)
 		obji->uvsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
-	if (obji->is_normals)
+	// if (obji->is_normals)
 		obji->normalsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
 	obji->numIndices = 0;
 	obji->numPositions = 0;
@@ -172,40 +173,54 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 					obji->posid[obji->numIndices] = ft_atoi(line_arr[1]) - 1;
 					if (obji->is_uvs)
 						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[1])) - 1;
+					else
+						obji->uvsid[obji->numIndices] = 0;
 					if (obji->is_normals)
 						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[1])) - 1;
+					else
+						obji->normalsid[obji->numIndices] = 0;
+
 
 					obji->posid[++obji->numIndices] = ft_atoi(line_arr[2 + i]) - 1;
 					if (obji->is_uvs)
 						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[2 + i])) - 1;
+					else
+						obji->uvsid[obji->numIndices] = 0;
 					if (obji->is_normals)
 						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[2 + i])) - 1;
+					else
+						obji->normalsid[obji->numIndices] = 0;
+
 
 					obji->posid[++obji->numIndices] = ft_atoi(line_arr[3 + i]) - 1;
 					if (obji->is_uvs)
 						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[3 + i])) - 1;
+					else
+						obji->uvsid[obji->numIndices] = 0;
 					if (obji->is_normals)
 						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[3 + i])) - 1;
+					else
+						obji->normalsid[obji->numIndices] = 0;
 				i++;
 				obji->numIndices++;
 				}
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
 			{
-				obji->vertices[obji->numPositions].pos.x = ft_atof(line_arr[1]);
-				obji->vertices[obji->numPositions].pos.y = ft_atof(line_arr[2]);
-				obji->vertices[obji->numPositions].pos.z = ft_atof(line_arr[3]);
+				obji->v[obji->numPositions].x = ft_atof(line_arr[1]);
+				obji->v[obji->numPositions].y = ft_atof(line_arr[2]);
+				obji->v[obji->numPositions].z = ft_atof(line_arr[3]);
 				// printf("pos: x:%f y:%f z:%f \n", 
-				// obji->vertices[obji->numPositions].pos.x,
-				// obji->vertices[obji->numPositions].pos.y,
-				// obji->vertices[obji->numPositions].pos.z);
+				// obji->v[obji->numPositions].pos.x,
+				// obji->v[obji->numPositions].pos.y,
+				// obji->v[obji->numPositions].pos.z);
 				obji->numPositions++;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
 			{
 				// move up in if V
-				obji->vertices[obji->numTex].uv.x = ft_atof(line_arr[1]);
-				obji->vertices[obji->numTex].uv.y = ft_atof(line_arr[2]);
+				obji->vt[obji->numTex].x = ft_atof(line_arr[1]);
+				obji->vt[obji->numTex].y = ft_atof(line_arr[2]);
 				obji->numTex++;
 				// printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 			}

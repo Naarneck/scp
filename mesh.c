@@ -10,8 +10,9 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex obji)
 	i = 0;
 	while (i < obji.numIndices)
 	{
-		mesh->positions[i] = obji.vertices[obji.posid[i]].pos;
-		mesh->uvs[i] = obji.vertices[obji.uvsid[i]].uv;
+		mesh->positions[i] = obji.v[obji.posid[i]];
+		// mesh->uvs[i] = obji.vt[obji.uvsid[i]];
+		mesh->uvs[i] = cinit(obji.vt[obji.uvsid[i]].x, 1.0 - obji.vt[obji.uvsid[i]].y);
 		mesh->normals[i] = vinit(0,0,0);
 		i++;
 	}

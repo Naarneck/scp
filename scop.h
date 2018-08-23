@@ -96,9 +96,9 @@ typedef	struct	s_vertex
 
 typedef	struct	s_objIndex
 {
-	// t_vector		*positions;
-	// t_coord			*texCoords;
-	t_vertex		*vertices; //test
+	t_vector		*v;
+	t_coord			*vt;
+	// t_vertex		*vertices; //test
 	t_vector		*normals;
 	// t_indices		*indices;
 	unsigned int	*posid;
