@@ -36,25 +36,25 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 				case 	SDLK_w: 
 				{ 
 					write(1,"w\n",2);
-					tf->pos.x += 0.1;
+					tf->pos.x += 1.0;
 					break;
 				}
 				case 	SDLK_s: 
 				{
 					write(1,"s\n",2);
-					tf->pos.x -= 0.1;
+					tf->pos.x -= 1.0;
 					break;
 				}
 				case	SDLK_a: 
 				{
 					write(1,"a\n",2);
-					tf->pos.y += 0.1;;
+					tf->pos.y += 1.0;;
 					break;
 				}
 				case	SDLK_d: 
 				{
 					write(1,"d\n",2);
-					tf->pos.y -= 0.1;;
+					tf->pos.y -= 1.0;;
 					break;
 				}
 				case	SDLK_q: 
@@ -108,13 +108,28 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 				case	SDLK_f: 
 				{
 					write(1,"f\n",2);
-					cam->pos.x -= 0.1;
+					cam->pos.x -= 1.0;
 					break;
 				}
 				case	SDLK_g: 
 				{
 					write(1,"g\n",2);
-					cam->pos.x += 0.1;
+
+					cam->pos.x += 1.0;
+					break;
+				}
+				case	SDLK_h: 
+				{
+					write(1,"h\n",2);
+					printf("%f\n", cam->pos.z);
+					cam->pos.z -= 1.0;
+					break;
+				}
+				case	SDLK_j: 
+				{
+					write(1,"j\n",2);
+					printf("%f\n", cam->pos.z);
+					cam->pos.z += 1.0;
 					break;
 				}
 			}
@@ -165,17 +180,17 @@ int main(int argc, char const **argv)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_FRONT); 
 	//teapot teapot2 uno drink cat bird Lumia_650 CSH/csh
-	obj_loadFile("resources/horse.obj", &obji);
+	obj_loadFile("resources/cube.obj", &obji);
 	write(1,"obj loaded\n",11);
 	// printf("numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",
 	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	// vertices = obji.vertices;
 	// indices = obji.indices;
-	cam_init(vinit(0.0, 0.0, 0.0), 66.0f, 1.0, &camera);
+	cam_init(vinit(0.0f, 0.0f, -3.0f), 66.0f, 1.0f, &camera);
 	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
 	write(1,"shader loaded\n",14);
-	texture_init("resources/Horse.tga", &texture);
+	texture_init("resources/pusheen.jpg", &texture);
 	write(1,"texture loaded\n",15);
 	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);
@@ -183,22 +198,26 @@ int main(int argc, char const **argv)
 	write(1,"mesh initialized\n",17);
 	while (d.run)
 	{
-		write(1,"loop started\n",14);
-		// printf("kek\n");
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e, &transform, &camera);
+		
 		glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
 		// glClear(GL_COLOR_BUFFER_BIT);
-		shader_update(&transform, &shader, &camera);
-		write(1,"texture updated\n",16);
-		write(1,"loop started\n",14);
+		
+	
 		shader_bind(&shader);
 		write(1,"shader binded\n",14);
+		
 		texture_bind(0, &texture);
 		write(1,"texture binded\n",15);
+
+		shader_update(&transform, &shader, &camera);
+		write(1,"texture updated\n",16);
+
 		mesh_draw(&mesh);
 		write(1,"mesh draw\n",10);
+		
 		update(&d);
 	}
 	shader_del(&shader);
