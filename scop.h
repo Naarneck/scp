@@ -205,6 +205,7 @@ t_mat4			mat4_rotateZ(float ang);
 t_mat4			mat4_translate(t_vector pos);
 t_mat4 			mat4_mult(t_mat4 a, t_mat4 b);
 t_mat4			mat4_transpose(t_mat4 src);
+t_mat4			mat4_identity();
 
 t_vertex		vertex_init(t_vector pos, t_coord uv);
 t_coord			vertex_getUV(t_vertex vertex);

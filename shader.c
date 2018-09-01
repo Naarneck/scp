@@ -61,19 +61,25 @@ void	shader_bind(t_shader *shader)
 	glUseProgram(shader->program);
 }
 
-void	shader_update(t_transf *transf, t_shader *shader, t_cam *camera)
+void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 {
-	t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
+	t_mat4 model = mat4_mult(mat4_identity(), transform_getModel(transf));
+	t_mat4 view = cam_lookAt(cam->pos, vadd(cam->pos, cam->forward), cam->up);
+	t_mat4 projection = cam->perspective;
+	t_mat4 mvp = mat4_mult(model, mat4_mult(projection, view));
+	// t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
 	// t_mat4 model = transform_getModel(transf);
 	for (int i = 0; i < 4; ++i)
 	{
 		for (int j = 0; j < 4; ++j)
 		{
-			printf("%f ", model.a[i][j]);
+			printf("%f ", mvp.a[i][j]);
 		}
 		printf("\n");
 	}
-	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &model.a[0][0]);
+	// glMatrixMode(GL_MODELVIEW);
+
+	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &mvp.a[0][0]);
 }
 
 char *shader_load(const char *filename)

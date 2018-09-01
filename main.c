@@ -163,7 +163,7 @@ int main(int argc, char const **argv)
 	}
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_FRONT); 
+	glCullFace(GL_BACK); 
 	//teapot teapot2 uno drink cat bird Lumia_650 CSH/csh
 	obj_loadFile("resources/horse.obj", &obji);
 	write(1,"obj loaded\n",11);
@@ -171,7 +171,7 @@ int main(int argc, char const **argv)
 	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	// vertices = obji.vertices;
 	// indices = obji.indices;
-	cam_init(vinit(0.0, 0.0, 0.0), 66.0f, 1.0, &camera);
+	cam_init(vinit(0.0, 0.0, -3.0), 66.0f, 1.0, &camera);
 	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
 	write(1,"shader loaded\n",14);
