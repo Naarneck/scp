@@ -171,7 +171,7 @@ int main(int argc, char const **argv)
 	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	// vertices = obji.vertices;
 	// indices = obji.indices;
-	cam_init(vinit(0.0, 0.0, -3.0), 66.0f, 1.0, &camera);
+	cam_init(vinit(0.0, 0.0, -3.0), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
 	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
 	shader_init("shaders/basic", &shader);
 	write(1,"shader loaded\n",14);
