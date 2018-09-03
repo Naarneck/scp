@@ -117,6 +117,30 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 					cam->pos.x += 0.1;
 					break;
 				}
+				case	SDLK_h: 
+				{
+					write(1,"h\n",2);
+					cam->pos.y -= 0.1;
+					break;
+				}
+				case	SDLK_j: 
+				{
+					write(1,"j\n",2);
+					cam->pos.y += 0.1;
+					break;
+				}
+				case	SDLK_k: 
+				{
+					write(1,"k\n",2);
+					cam->pos.z -= 1.1;
+					break;
+				}
+				case	SDLK_l: 
+				{
+					write(1,"l\n",2);
+					cam->pos.z += 1.1;
+					break;
+				}
 			}
 	}
 	return 1;
@@ -161,21 +185,22 @@ int main(int argc, char const **argv)
 	{
 		printf("error?\n");
 	}
+	glEnable(GL_DEPTH_CLAMP);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK); 
 	//teapot teapot2 uno drink cat bird Lumia_650 CSH/csh
-	obj_loadFile("resources/horse.obj", &obji);
+	obj_loadFile("resources/bird.obj", &obji);
 	write(1,"obj loaded\n",11);
 	// printf("numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",
 	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	// vertices = obji.vertices;
 	// indices = obji.indices;
-	cam_init(vinit(0.0, 0.0, -3.0), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
-	transform_init(vinit(0.0, 0.0, 0.0), vinit(0.0, 0.0, 0.0), vinit(1.0, 1.0, 1.0), &transform);
+	cam_init(vinit(0.0f, 0.0f, -1.0f), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
+	transform_init(vinit(0.0f, 0.0f, 0.0f), vinit(0.0f, 0.0f, 0.0f), vinit(1.0f, 1.0f, 1.0f), &transform);
 	shader_init("shaders/basic", &shader);
 	write(1,"shader loaded\n",14);
-	texture_init("resources/Horse.tga", &texture);
+	texture_init("resources/penguin.png", &texture);
 	write(1,"texture loaded\n",15);
 	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);

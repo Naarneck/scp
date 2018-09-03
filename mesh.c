@@ -19,7 +19,7 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex obji)
 		// mesh->uvs[i] = obji.vt[obji.uvsid[i]];
 		mesh->uvs[i] = cinit(obji.vt[obji.uvsid[i]].x, 1.0 - obji.vt[obji.uvsid[i]].y);
 		// printf("mew\n");
-		mesh->normals[i] = vinit(0,0,0);
+		mesh->normals[i] = obji.vn[obji.normalsid[i]];
 		i++;
 	}
 }
@@ -64,6 +64,11 @@ void mesh_init(t_mesh *mesh, t_objIndex obji)
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);
 
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->vertexArrBuf[NORMAL_VB]);
+	glBufferData(GL_ARRAY_BUFFER, obji.numIndices * sizeof(mesh->normals[0]), &mesh->normals[0], GL_STATIC_DRAW);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2 , 3, GL_FLOAT, GL_FALSE, 0, 0);
+
 	// glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mesh->vertexArrBuf[INDEX_VB]);
 	// glBufferData(GL_ELEMENT_ARRAY_BUFFER, obji.numIndices * sizeof(obji.posid[0]), &obji.posid[0], GL_STATIC_DRAW);
 
@@ -72,6 +77,7 @@ void mesh_init(t_mesh *mesh, t_objIndex obji)
 
 	glBindVertexArray(0);
 	glBindVertexArray(1);
+	glBindVertexArray(2);
 	
 	free(mesh->positions);
 	free(mesh->normals);

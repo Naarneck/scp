@@ -16,6 +16,7 @@ void shader_init(char *filename, t_shader *shader)
 	
 	glBindAttribLocation(shader->program, 0, "position");
 	glBindAttribLocation(shader->program, 1, "texCoord");
+	glBindAttribLocation(shader->program, 2, "normal");
 
 	glLinkProgram(shader->program);
 	//Checkshader;
@@ -63,20 +64,24 @@ void	shader_bind(t_shader *shader)
 
 void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 {
-	t_mat4 model = mat4_mult(mat4_identity(), transform_getModel(transf));
+	// t_mat4 model = mat4_mult(mat4_identity(), transform_getModel(transf));
+	t_mat4 model = transform_getModel(transf);
 	t_mat4 view = cam_lookAt(cam->pos, vadd(cam->pos, cam->forward), cam->up);
 	t_mat4 projection = cam->perspective;
-	t_mat4 mvp = mat4_mult(model, mat4_mult(projection, view));
+	t_mat4 mvp = mat4_mult(model, mat4_mult(view, projection));
+	// t_mat4 mvp = mat4_mult(model, projection);
+	// t_mat4 mvp = mat4_mult(view, model);
+
 	// t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
 	// t_mat4 model = transform_getModel(transf);
-	// for (int i = 0; i < 4; ++i)
-	// {
-	// 	for (int j = 0; j < 4; ++j)
-	// 	{
-	// 		printf("%f ", mvp.a[i][j]);
-	// 	}
-	// 	printf("\n");
-	// }
+	for (int i = 0; i < 4; ++i)
+	{
+		for (int j = 0; j < 4; ++j)
+		{
+			printf("%f ", mvp.a[i][j]);
+		}
+		printf("\n");
+	}
 	// glMatrixMode(GL_MODELVIEW);
 
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &mvp.a[0][0]);

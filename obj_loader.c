@@ -120,8 +120,8 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 			else if (line_arr[0][0] == 'v')
 				obji->numPositions++;
 		}
-		// printf(" numNormals: %u numPositions: %u numTex: %u numIndices: %u  is_normals: %d is_uvs: %d\n",
-		// obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices, obji->is_normals, obji->is_uvs);
+		printf(" numNormals: %u numPositions: %u numTex: %u numIndices: %u  is_normals: %d is_uvs: %d\n",
+		obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices, obji->is_normals, obji->is_uvs);
 		while (line_arr[++i])
 			free(line_arr[i]);
 		free(line_arr);
@@ -147,6 +147,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	obj_checkFile(filename, obji);
 	obji->v = (t_vector *)malloc(sizeof(t_vector) * obji->numPositions);
 	obji->vt = (t_coord *)malloc(sizeof(t_coord) * obji->numTex);
+	obji->vn = (t_vector *)malloc(sizeof(t_vector) * obji->numNormals);
 	obji->posid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
 	// if (obji->is_uvs)
 		obji->uvsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
@@ -155,6 +156,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	obji->numIndices = 0;
 	obji->numPositions = 0;
 	obji->numTex = 0;
+	obji->numNormals = 0;
 	fd = open(filename, O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
@@ -222,8 +224,21 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				obji->vt[obji->numTex].x = ft_atof(line_arr[1]);
 				obji->vt[obji->numTex].y = ft_atof(line_arr[2]);
 				obji->numTex++;
-				// printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
+			
 			}
+			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 'n')
+			{
+				obji->vn[obji->numNormals].x = ft_atof(line_arr[1]);
+				obji->vn[obji->numNormals].y = ft_atof(line_arr[2]);
+				obji->vn[obji->numNormals].z = ft_atof(line_arr[3]);
+				// printf("normals: x:%f y:%f z:%f \n", 
+				// obji->vn[obji->numNormals].x,
+				// obji->vn[obji->numNormals].y,
+				// obji->vn[obji->numNormals].z);
+				obji->numNormals++;
+				
+			}
+			// printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 		}
 		i = -1;
 		while (line_arr[++i])

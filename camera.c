@@ -2,18 +2,12 @@
 
 void	cam_init(t_vector pos, float fov, float aspect, t_cam *cam)
 {
-	cam->perspective = cam_perspective(fov, aspect, 0.1f, 1000.0f);
+	cam->perspective = cam_perspective(fov, aspect, 0.01f, 1000.0f);
 	cam->pos = pos;
 	cam->forward = vinit(0.0f, 0.0f, 1.0f);
 	cam->up  = vinit(0.0f, 1.0f, 0.0f);
 }
 
-t_mat4	cam_getViewProj(t_cam *cam)
-{
-	return (mat4_mult(cam->perspective, cam_lookAt(cam->pos, vadd(cam->pos, cam->forward), cam->up)));
-	// return (cam->perspective);
-	// return (cam_lookAt(cam->pos, vadd(cam->pos, cam->forward), cam->up));
-}
 /*
   [         xaxis.x          yaxis.x          zaxis.x  0 ]
 = [         xaxis.y          yaxis.y          zaxis.y  0 ]
@@ -29,7 +23,7 @@ t_mat4	cam_lookAt(t_vector pos, t_vector dir, t_vector up)
 
 	z = vnorm(vsub(pos, dir));
 	x = vnorm(vcross(up, z));
-	y = vcross(z, x);
+	y = (vcross(z, x));
 	mat.a[0][0] = x.x;
 	mat.a[0][1] = y.x;
 	mat.a[0][2] = z.x;
@@ -58,10 +52,10 @@ t_mat4	cam_perspective(float fov, float aspect, float zNear, float zFar)
 	float	tanHalfFov;
 	float	zRange;
 
-	tanHalfFov = tan(fov * 0.5 * PI / 180.0f);
+	tanHalfFov = tan(TORADS(fov * 0.5f));
 	zRange = (zNear - zFar);
-
-	mat.a[0][0] = 1.0f / tanHalfFov; //>?
+	printf("aspect: %f\n", aspect);
+	mat.a[0][0] = 1.0f / (tanHalfFov * aspect); //>?
 	mat.a[0][1] = 0.0f;
 	mat.a[0][2] = 0.0f;
 	mat.a[0][3] = 0.0f;
@@ -73,7 +67,7 @@ t_mat4	cam_perspective(float fov, float aspect, float zNear, float zFar)
 
 	mat.a[2][0] = 0.0f;
 	mat.a[2][1] = 0.0f;
-	mat.a[2][2] = -(-zNear - zFar) / zRange;
+	mat.a[2][2] = -(-zNear - zFar) / zRange; // - (-0.1) 
 	mat.a[2][3] = -1.0f;
 
 	mat.a[3][0] = 0.0f;
@@ -89,5 +83,6 @@ t_mat4	cam_perspective(float fov, float aspect, float zNear, float zFar)
 		}
 		printf("\n");
 	}
+	// sleep(500);
 	return (mat);
 }

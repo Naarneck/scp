@@ -11,11 +11,12 @@
 # include "get_next_line.h"
 # include <unistd.h>
 
-# define WIDTH 1000
-# define HEIGHT 1000
-# define NUM_BUFFERS 2
+# define WIDTH 800
+# define HEIGHT 800
+# define NUM_BUFFERS 3
 // # define INDEX_TB 3
 // # define INDEX_VB 2
+# define NORMAL_VB 2
 # define TEXCOORD_VB 1
 # define POSITION_VB 0
 
@@ -30,7 +31,7 @@
 # define SINS(angle) sin(angle * PI / 180)
 # define TANG(angle) tan(angle * PI / 180)
 # define ACOSN(angle) acos(angle) * 180 / PI
-# define TORADS(angle) (angle * PI / 180)
+# define TORADS(angle) (angle * PI / 180.0f)
 
 typedef	struct	s_color
 {
@@ -74,6 +75,7 @@ typedef	struct	s_objIndex
 {
 	t_vector		*v;
 	t_coord			*vt;
+	t_vector		*vn;
 	// t_vertex		*vertices; //test
 	t_vector		*normals;
 	// t_indices		*indices;
@@ -161,7 +163,7 @@ void			transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf);
 t_mat4			transform_getModel(t_transf *tf);
 
 void			cam_init(t_vector pos, float fov, float aspect, t_cam *cam);
-t_mat4			cam_getViewProj(t_cam *cam);
+// t_mat4			cam_getViewProj(t_cam *cam);
 t_mat4			cam_lookAt(t_vector pos, t_vector dir, t_vector up);
 t_mat4			cam_perspective(float fov, float aspect, float zNear, float zFar);
 

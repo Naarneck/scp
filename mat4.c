@@ -180,7 +180,7 @@ t_mat4	mat4_scale(t_vector sc)
 	tr.a[3][0] = 0.0f;
 	tr.a[3][1] = 0.0f;
 	tr.a[3][2] = 0.0f;
-	tr.a[3][3] = 1.0;
+	tr.a[3][3] = 1.0f;
 
 	return (tr);	
 }
