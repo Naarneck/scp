@@ -160,8 +160,10 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	fd = open(filename, O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
-		if (line != NULL)
-		line_arr = ft_strsplitnum(line, ' ', &num);
+		if (line != NULL){
+			line[ft_strlen(line) - 1] = '\0'; //if ' ' in the end of line
+			line_arr = ft_strsplitnum(line, ' ', &num);
+		}
 		// printf("num %d\n", num);
 		if (line_arr[0] && line_arr[1] && num > 0)
 		{
@@ -203,10 +205,16 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[3 + i])) - 1;
 					else
 						obji->normalsid[obji->numIndices] = 0;
+				
+				free(line_arr[3 + i]);
+				free(line_arr[2 + i]);
+				free(line_arr[i]);
+
 				i++;
 				++obji->numIndices;
-				}
+				
 			}
+		}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
 			{
 				obji->v[obji->numPositions].x = ft_atof(line_arr[1]);
@@ -247,7 +255,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 		free(line);
 	}
 	// printf("obj loaded\n");
-	// printf("f:  %d / %d / %d\n", obji->posid[8], obji->uvsid[8], obji->normalsid[8]);
-	// 	printf("f:  %d / %d / %d\n", obji->posid[9], obji->uvsid[9], obji->normalsid[9]);
+	printf("f:  %d / %d / %d\n", obji->posid[8], obji->uvsid[8], obji->normalsid[8]);
+		printf("f:  %d / %d / %d\n", obji->posid[9], obji->uvsid[9], obji->normalsid[9]);
 	printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 }

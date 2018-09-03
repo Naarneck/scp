@@ -174,10 +174,10 @@ void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
 
-void 			mesh_init(t_mesh *mesh, t_objIndex obji);
+void 			mesh_init(t_mesh *mesh, t_objIndex *obji);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
-void			mesh_index_obj(t_mesh *mesh, t_objIndex obji);
+void			mesh_index_obj(t_mesh *mesh, t_objIndex *obji);
 
 void			texture_del(t_texture *texture);
 void			texture_bind(unsigned int unit, t_texture *texture);
