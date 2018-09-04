@@ -199,6 +199,7 @@ float			vlen(t_vector v1);
 t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
 t_vector		vcross(t_vector v1, t_vector v2);
+t_vector		vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2);
 
 t_mat4			mat4_scale(t_vector sc);
 t_mat4			mat4_rotateX(float ang);

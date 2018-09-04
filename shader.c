@@ -54,7 +54,7 @@ GLuint shader_create(char *text, GLenum shaderType)
 	glShaderSource(shader, 1, &shaderSrc, NULL);
 	glCompileShader(shader);
 	//checkshader;
-	free(text);
+	// free(text);
 	return shader;
 }
 
@@ -95,13 +95,13 @@ char *shader_load(const char *filename)
 	char *line;
 	char *temp;
 
-	text = ft_strnew(10000);
+	text = ft_strnew(1);
 	fd = open(filename, O_RDONLY);
 	printf("fd # %d\n", fd);
 	while (get_next_line(fd, &line) == 1)
 	{
 		line = ft_strcat(line, "\n");
-		text = ft_strcat(text, line);
+		text = ft_strjoin(text, line);
 		free(line);
 	}
 	// printf("%s\n", text);

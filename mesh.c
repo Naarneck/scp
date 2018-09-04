@@ -1,5 +1,13 @@
 #include "scop.h"
 
+
+/*
+
+a_pos   :  0.000000 / 0.405188 / 1.365367
+b_pos   :  0.000000 / -0.405188 / -1.365367
+n_pos   :  0.000000 / 0.000000 / -0.000000
+mesh_normals:  nan / nan / nan
+*/
 void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
 {
 	int i;
@@ -14,13 +22,41 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
 	{
 
 		printf("%d: ", i);
-		printf("f:  %d / %d / %d\n", obji->posid[i], obji->uvsid[i], obji->normalsid[i]);
+		// printf("f:  %d / %d / %d\n", obji->posid[i], obji->uvsid[i], obji->normalsid[i]);
+
 		mesh->positions[i] = obji->v[obji->posid[i]];
+		// printf("vertex_mesh:  %f / %f / %f\n", mesh->positions[i].x, mesh->positions[i].y, mesh->positions[i].z);
 		// mesh->uvs[i] = obji->vt[obji->uvsid[i]];
-		mesh->uvs[i] = cinit(obji->vt[obji->uvsid[i]].x, 1.0 - obji->vt[obji->uvsid[i]].y);
+		if (obji->is_uvs)
+
+			mesh->uvs[i] = cinit(obji->vt[obji->uvsid[i]].x, 1.0 - obji->vt[obji->uvsid[i]].y);
+		else
+		{
+			if (i % 3 == 0)
+				mesh->uvs[i] = cinit(0.0, 0.0);
+			else if (i % 2 == 0)
+				mesh->uvs[i] = cinit(0.5, 0.0);
+			else
+				mesh->uvs[i] = cinit(1.0, 0.0);
+		}
 		// printf("mew\n");
-		mesh->normals[i] = obji->vn[obji->normalsid[i]];
+		if (obji->is_normals)
+			mesh->normals[i] = obji->vn[obji->normalsid[i]];
+		else if (i > 1)
+		{
+			// mesh->normals[i] = vinit(0.5,0.5,0.5);
+			mesh->normals[i] = vcalcNormal(mesh->positions[i - 2], mesh->positions[i - 1] ,mesh->positions[i]);
+			// printf("mesh_pos -2:  %f / %f / %f\n", mesh->positions[i-2].x, mesh->positions[i-2].y, mesh->positions[i-2].z);
+			// printf("mesh_pos -1:  %f / %f / %f\n", mesh->positions[i-1].x, mesh->positions[i-1].y, mesh->positions[i-1].z);
+			// printf("mesh_pos   :  %f / %f / %f\n", mesh->positions[i].x, mesh->positions[i].y, mesh->positions[i].z);
+			printf("mesh_normals:  %f / %f / %f\n", mesh->normals[i].x, mesh->normals[i].y, mesh->normals[i].z);
+		}
 		i++;
+	}
+	if (obji->is_normals)
+	{
+		mesh->normals[0] = mesh->normals[2];
+		mesh->normals[1] = mesh->normals[2];
 	}
 }
 

@@ -6,6 +6,7 @@ int	getUV(char *str)
 	int		first_slash;
 	int		sec_slash;
 	char	*temp;
+
 	first_slash = 0;
 	i = 0;
 	while (str[i] != '\0')
@@ -165,7 +166,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	while (get_next_line(fd, &line) == 1)
 	{
 		if (line != NULL){
-			line[ft_strlen(line) - 1] = '\0'; //if ' ' in the end of line
+			// line[ft_strlen(line) - 1] = '\0'; //if ' ' in the end of line
 			line_arr = ft_strsplitnum(line, ' ', &num);
 		}
 		// printf("num %d\n", num);
@@ -249,7 +250,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 		i = -1;
 		while (line_arr[++i])
 		{
-			printf("freeeee: %s\n", line_arr[i]);
+			// printf("freeeee: %s\n", line_arr[i]);
 			free(line_arr[i]);
 		}
 		free(line_arr);

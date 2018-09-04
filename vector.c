@@ -51,6 +51,8 @@ t_vector	vnorm(t_vector v1)
 	float	length;
 
 	length = vlen(v1);
+	if (length == 0.0)
+		return (vinit(0.0, 0.0, 0.0));
 	v1.x /= length;
 	v1.y /= length;
 	v1.z /= length;
@@ -108,5 +110,21 @@ t_coord		vertex_getUV(t_vertex vertex)
 	return (coord);
 }
 
+t_vector	vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2)
+{
+	t_vector n;
+	t_vector a;
+	t_vector b;
+
+	a = vsub(p1, p0);
+	b = vsub(p2, p1);
+	// printf("a_pos   :  %f / %f / %f\n", a.x, a.y, a.z);
+	// printf("b_pos   :  %f / %f / %f\n", b.x, b.y, b.z);
+	n.x = a.y * b.z - a.z * b.y;
+	n.y = a.z * b.x - a.x * b.z;
+	n.z = a.x * b.y - a.y * b.x;
+	// printf("n_pos   :  %f / %f / %f\n", n.x, n.y, n.z);
+	return (vnorm(n));
+}
 
 
