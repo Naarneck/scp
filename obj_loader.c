@@ -1,35 +1,36 @@
 #include "scop.h"
 
-
-char *getUV(char *str)
+int	getUV(char *str)
 {
-	int i;
-	int first_slash;
-	int sec_slash;
-
+	int		i;
+	int		first_slash;
+	int		sec_slash;
+	char	*temp;
 	first_slash = 0;
 	i = 0;
 	while (str[i] != '\0')
 	{
 		if (!first_slash && str[i] == '/')
-
 			first_slash = i;
 		else if (first_slash && str[i] == '/')
 		{
 			sec_slash = i;
-			// printf("Uv( %s )", ft_strsub(str, first_slash + 1, sec_slash - first_slash));
-			return (ft_strsub(str, first_slash + 1, sec_slash - first_slash));
+			temp = ft_strsub(str, first_slash + 1, sec_slash - first_slash);
+			i = ft_atoi(temp);
+			free (temp);
+			return (i);
 		}
 		i++;
 	}
-	return (str);
+	return (0);
 }
 
-char *getNormal(char *str)
+int	getNormal(char *str)
 {
-	int i;
-	int first_slash;
-	int sec_slash;
+	int		i;
+	int		first_slash;
+	int		sec_slash;
+	char	*temp;
 
 	first_slash = 0;
 	i = 0;
@@ -40,12 +41,14 @@ char *getNormal(char *str)
 		else if (first_slash && str[i] == '/')
 		{
 			sec_slash = i;
-			// printf("Norm( %s )", ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash));
-			return (ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash));
+			temp = ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash);
+			i = ft_atoi(temp);
+			free (temp);
+			return (i);
 		}
 		i++;
 	}
-	return (str);
+	return (0);
 }
 
 float		ft_atof(char *str)
@@ -95,10 +98,9 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 	// obji->numLines = 0;
 	fd = open(filename, O_RDONLY);
  	// printf("fd # %d\n", fd);
- 	i =0;
 	while (get_next_line(fd, &line) == 1)
 	{
-		i = -1;
+		
 		// obji->numLines++;
 		if (line != NULL)
 			line_arr = ft_strsplitnum(line, ' ', &num);
@@ -108,9 +110,9 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 			if (line_arr[0][0] == 'f')
 			{
 				obji->numIndices += (num - 3);
-				if (ft_atoi(getUV(line_arr[1])) > 0 )
+				if (getUV(line_arr[1]) > 0 )
 					obji->is_uvs = 1;
-				if (ft_atoi(getNormal(line_arr[1])) > 0)
+				if (getNormal(line_arr[1]) > 0)
 					obji->is_normals = 1;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
@@ -122,6 +124,7 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 		}
 		printf(" numNormals: %u numPositions: %u numTex: %u numIndices: %u  is_normals: %d is_uvs: %d\n",
 		obji->numNormals, obji->numPositions, obji->numTex, obji->numIndices, obji->is_normals, obji->is_uvs);
+		i = -1;
 		while (line_arr[++i])
 			free(line_arr[i]);
 		free(line_arr);
@@ -139,6 +142,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	int		i;
 	int		num;
 	int		fd;
+
 //to do
 //check length..
 //cheack params count,
@@ -176,43 +180,37 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 					// printf("i: %d\n", obji->numIndices);
 					obji->posid[obji->numIndices] = ft_atoi(line_arr[1]) - 1;
 					if (obji->is_uvs)
-						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[1])) - 1;
+						obji->uvsid[obji->numIndices] = getUV(line_arr[1]) - 1;
 					else
 						obji->uvsid[obji->numIndices] = 0;
 					if (obji->is_normals)
-						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[1])) - 1;
+						obji->normalsid[obji->numIndices] = getNormal(line_arr[1]) - 1;
 					else
 						obji->normalsid[obji->numIndices] = 0;
 
 					obji->posid[++obji->numIndices] = ft_atoi(line_arr[2 + i]) - 1;
 					// printf("in: %d\n", obji->numIndices);
 					if (obji->is_uvs)
-						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[2 + i])) - 1;
+						obji->uvsid[obji->numIndices] = getUV(line_arr[2 + i]) - 1;
 					else
 						obji->uvsid[obji->numIndices] = 0;
 					if (obji->is_normals)
-						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[2 + i])) - 1;
+						obji->normalsid[obji->numIndices] = getNormal(line_arr[2 + i]) - 1;
 					else
 						obji->normalsid[obji->numIndices] = 0;
 					
 					obji->posid[++obji->numIndices] = ft_atoi(line_arr[3 + i]) - 1;
 					// printf("ind: %d\n", obji->numIndices);
 					if (obji->is_uvs)
-						obji->uvsid[obji->numIndices] = ft_atoi(getUV(line_arr[3 + i])) - 1;
+						obji->uvsid[obji->numIndices] = getUV(line_arr[3 + i]) - 1;
 					else
 						obji->uvsid[obji->numIndices] = 0;
 					if (obji->is_normals)
-						obji->normalsid[obji->numIndices] = ft_atoi(getNormal(line_arr[3 + i])) - 1;
+						obji->normalsid[obji->numIndices] = getNormal(line_arr[3 + i]) - 1;
 					else
 						obji->normalsid[obji->numIndices] = 0;
-				
-				free(line_arr[3 + i]);
-				free(line_arr[2 + i]);
-				free(line_arr[i]);
-
 				i++;
 				++obji->numIndices;
-				
 			}
 		}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
@@ -250,7 +248,10 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 		}
 		i = -1;
 		while (line_arr[++i])
+		{
+			printf("freeeee: %s\n", line_arr[i]);
 			free(line_arr[i]);
+		}
 		free(line_arr);
 		free(line);
 	}
