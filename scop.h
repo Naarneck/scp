@@ -11,7 +11,7 @@
 # include "get_next_line.h"
 # include <unistd.h>
 
-# define WIDTH 800
+# define WIDTH 1200
 # define HEIGHT 800
 # define NUM_BUFFERS 3
 // # define INDEX_TB 3
@@ -76,7 +76,6 @@ typedef	struct	s_objIndex
 	t_vector		*v;
 	t_coord			*vt;
 	t_vector		*vn;
-	// t_vertex		*vertices; //test
 	t_vector		*normals;
 	// t_indices		*indices;
 	unsigned int	*posid;
@@ -125,6 +124,8 @@ typedef	struct	s_data
 typedef	struct	s_texture
 {
 	GLuint			texture;
+	int 			id;
+	char 			*name;
 }				t_texture;
 
 typedef	struct	s_cam

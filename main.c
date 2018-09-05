@@ -18,7 +18,7 @@ void	quit_scop(t_data *d)
 	SDL_Quit();
 }
 
-int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
+int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam, t_texture *tex)
 {
 	switch(event.type) 
 	{
@@ -141,12 +141,31 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam)
 					cam->pos.z += 1.1;
 					break;
 				}
+				case	SDLK_t: 
+				{
+					write(1,"t\n",2);
+					++tex->id;
+					texture_del(tex);
+					if (tex->id == 0)
+						texture_init("resources/diffuse.jpg", tex);
+					else if (tex->id == 1)
+					{
+						texture_init("resources/diff.jpg", tex);
+					}
+					else if (tex->id == 2)
+					{
+						printf("allo yaoba ato ti?\n");
+						texture_init(tex->name, tex);
+						tex->id = -1;
+					}
+					break;
+				}
 			}
 	}
 	return 1;
 }
 
-int main(int argc, char const **argv)
+int main(int argc, char **argv)
 {
 	SDL_Event		e;
 	t_data			d;
@@ -164,7 +183,20 @@ int main(int argc, char const **argv)
 
 	t_vertex 		*vertices;
 	unsigned int 	*indices;
-
+	texture.id = 0;
+	if (argc < 2)
+	{
+		write(1, "Usage: ./scop [obj path] [texture path]\n", 40);
+		write(1, "\tkeys:\n", 7);
+		write(1, "\tw,a,s,d \t- move object x,y,z\n", 30);
+		write(1, "\tq,e \t- scale object\n", 21);
+		write(1, "\tz,x,c,v,b,n \t- rotate object\n", 30);
+		write(1, "\tf,g,h,j\t- move camera\n", 23);
+		write(1, "\tt \t- apply texture\n", 20);
+		return (0);
+	}
+	if (argc >= 3)
+		texture.name = argv[2];
 	data_init(&d);
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -190,17 +222,17 @@ int main(int argc, char const **argv)
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK); 
 	//teapot teapot2 uno drink cat bird Lumia_650 CSH/csh
-	obj_loadFile("resources/42.obj", &obji);
+	obj_loadFile(argv[1], &obji);
 	write(1,"obj loaded\n",11);
 	// printf("numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",
 	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	// vertices = obji.vertices;
 	// indices = obji.indices;
-	cam_init(vinit(0.0f, 0.0f, -1.0f), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
+	cam_init(vinit(0.0f, 2.0f, -3.0f), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
 	transform_init(vinit(0.0f, 0.0f, 0.0f), vinit(0.0f, 0.0f, 0.0f), vinit(1.0f, 1.0f, 1.0f), &transform);
 	shader_init("shaders/basic", &shader);
 	write(1,"shader loaded\n",14);
-	texture_init("resources/diff.jpg", &texture);
+	texture_init("resources/diffuse.jpg", &texture);
 	write(1,"texture loaded\n",15);
 	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);
@@ -211,8 +243,8 @@ int main(int argc, char const **argv)
 		write(1,"loop started\n",14);
 		// printf("kek\n");
 		SDL_PollEvent(&e);
-		d.run = handleEvent(e, &transform, &camera);
-		glClearColor(0.0f, 0.75f, 0.65f, 1.0f);
+		d.run = handleEvent(e, &transform, &camera, &texture);
+		glClearColor(0.0f, 0.95f, 0.85f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
 		// glClear(GL_COLOR_BUFFER_BIT);
 		shader_update(&transform, &shader, &camera);

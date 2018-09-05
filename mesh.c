@@ -28,14 +28,13 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
 		// printf("vertex_mesh:  %f / %f / %f\n", mesh->positions[i].x, mesh->positions[i].y, mesh->positions[i].z);
 		// mesh->uvs[i] = obji->vt[obji->uvsid[i]];
 		if (obji->is_uvs)
-
 			mesh->uvs[i] = cinit(obji->vt[obji->uvsid[i]].x, 1.0 - obji->vt[obji->uvsid[i]].y);
 		else
 		{
 			if (i % 3 == 0)
 				mesh->uvs[i] = cinit(0.0, 0.0);
 			else if (i % 2 == 0)
-				mesh->uvs[i] = cinit(0.5, 0.0);
+				mesh->uvs[i] = cinit(0.5, 1.0);
 			else
 				mesh->uvs[i] = cinit(1.0, 0.0);
 		}
