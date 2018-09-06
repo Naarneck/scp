@@ -5,8 +5,8 @@ void shader_init(char *filename, t_shader *shader)
 	unsigned int i;
 
 	shader->program = glCreateProgram();
-	shader->shaders[0] = shader_create(shader_load(ft_strjoin(filename, ".vs")), GL_VERTEX_SHADER);
-	shader->shaders[1] = shader_create(shader_load(ft_strjoin(filename, ".fs")), GL_FRAGMENT_SHADER);
+	shader->shaders[0] = shader_create(shader_load("shaders/basic.vs"), GL_VERTEX_SHADER);
+	shader->shaders[1] = shader_create(shader_load("shaders/basic.fs"), GL_FRAGMENT_SHADER);
 	i = 0;
 	while (i < NUM_SHADERS)
 	{
@@ -54,7 +54,7 @@ GLuint shader_create(char *text, GLenum shaderType)
 	glShaderSource(shader, 1, &shaderSrc, NULL);
 	glCompileShader(shader);
 	//checkshader;
-	// free(text);
+	free(text);
 	return shader;
 }
 
@@ -75,36 +75,25 @@ void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 
 	// t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
 	// t_mat4 model = transform_getModel(transf);
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j)
-		{
-			printf("%f ", mvp.a[i][j]);
-		}
-		printf("\n");
-	}
 	// glMatrixMode(GL_MODELVIEW);
 
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &mvp.a[0][0]);
 }
 
-char *shader_load(const char *filename)
+char	*shader_load(const char *filename)
 {
 	int fd;
 	char *text;
 	char *line;
-	char *temp;
 
-	text = ft_strnew(1);
+	text = ft_strnew(100000);
 	fd = open(filename, O_RDONLY);
 	printf("fd # %d\n", fd);
 	while (get_next_line(fd, &line) == 1)
 	{
-		line = ft_strcat(line, "\n");
-		text = ft_strjoin(text, line);
+		ft_strcat(text, "\n");
+		ft_strcat(text, line);
 		free(line);
 	}
-	// printf("%s\n", text);
-	// close(fd);
 	return (text);
 }

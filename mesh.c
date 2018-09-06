@@ -44,7 +44,13 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
 		else if (i > 1)
 		{
 			// mesh->normals[i] = vinit(0.5,0.5,0.5);
+			if (i % 3 == 2)
+			{
 			mesh->normals[i] = vcalcNormal(mesh->positions[i - 2], mesh->positions[i - 1] ,mesh->positions[i]);
+			mesh->normals[i - 1] = mesh->normals[i];
+			mesh->normals[i - 2] = mesh->normals[i];
+			}
+			
 			// printf("mesh_pos -2:  %f / %f / %f\n", mesh->positions[i-2].x, mesh->positions[i-2].y, mesh->positions[i-2].z);
 			// printf("mesh_pos -1:  %f / %f / %f\n", mesh->positions[i-1].x, mesh->positions[i-1].y, mesh->positions[i-1].z);
 			// printf("mesh_pos   :  %f / %f / %f\n", mesh->positions[i].x, mesh->positions[i].y, mesh->positions[i].z);
@@ -52,11 +58,11 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
 		}
 		i++;
 	}
-	if (obji->is_normals)
-	{
-		mesh->normals[0] = mesh->normals[2];
-		mesh->normals[1] = mesh->normals[2];
-	}
+	// if (obji->is_normals)
+	// {
+	// 	mesh->normals[0] = mesh->normals[2];
+	// 	mesh->normals[1] = mesh->normals[2];
+	// }
 }
 
 void mesh_init(t_mesh *mesh, t_objIndex *obji)
