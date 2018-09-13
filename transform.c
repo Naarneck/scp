@@ -13,6 +13,9 @@ void	transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf)
 	tf->scale.x = scale.x;
 	tf->scale.y = scale.y;
 	tf->scale.z = scale.z;
+
+	tf->mode = 1;
+	tf->loop = 0.0;
 }
 
 t_mat4	transform_getModel(t_transf *tf)

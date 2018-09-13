@@ -166,7 +166,8 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	while (get_next_line(fd, &line) == 1)
 	{
 		if (line != NULL){
-			// line[ft_strlen(line) - 1] = '\0'; //if ' ' in the end of line
+			if(!isdigit(line[ft_strlen(line) - 1]))
+				line[ft_strlen(line) - 1] = '\0'; //if ' ' in the end of line
 			line_arr = ft_strsplitnum(line, ' ', &num);
 		}
 		// printf("num %d\n", num);

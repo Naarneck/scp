@@ -1,7 +1,7 @@
 #ifndef SCOP_H
 # define SCOP_H
 
-# include <stdio.h> //del
+# include <stdio.h>
 # include <math.h>
 # include <stdlib.h>
 # include <GL/glew.h> 
@@ -10,6 +10,7 @@
 # include "libft/libft.h"
 # include "get_next_line.h"
 # include <unistd.h>
+# include <sys/time.h>
 
 # define WIDTH 1200
 # define HEIGHT 800
@@ -23,8 +24,10 @@
  
 # define NUM_SHADERS 2
 
-# define NUM_UNIFORMS 1
+# define NUM_UNIFORMS 3
 # define TRANSFORM_U 0
+# define MODE_U 1
+# define LOOP_U 2
 
 # define PI 3.14159265
 # define COSN(angle) cos(angle * PI / 180)
@@ -155,6 +158,8 @@ typedef	struct	s_transf
 	t_vector	pos;
 	t_vector	rot;
 	t_vector	scale;
+	int 		mode;
+	float		loop;
 }				t_transf;
 
 void			obj_checkFile(const char *filename, t_objIndex *obji);
@@ -174,6 +179,7 @@ GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
+void  			shader_mode_update(t_shader *shader, t_transf *tf);
 
 void 			mesh_init(t_mesh *mesh, t_objIndex *obji);
 void			mesh_del(t_mesh *mesh);

@@ -23,6 +23,8 @@ void shader_init(char *filename, t_shader *shader)
 	glValidateProgram(shader->program);
 	//Checkshader;
 	shader->unifs[TRANSFORM_U] = glGetUniformLocation(shader->program, "transform");
+	shader->unifs[MODE_U] = glGetUniformLocation(shader->program, "mode");
+	shader->unifs[LOOP_U] = glGetUniformLocation(shader->program, "loop");
 }
 
 void shader_del(t_shader *shader)
@@ -76,8 +78,16 @@ void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 	// t_mat4 model = mat4_mult(cam_getViewProj(camera), transform_getModel(transf));
 	// t_mat4 model = transform_getModel(transf);
 	// glMatrixMode(GL_MODELVIEW);
-
+	transf->loop += 0.05;
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE /*transpose*/, &mvp.a[0][0]);
+}
+
+void  shader_mode_update(t_shader *shader, t_transf *tf)
+{
+	if (tf->loop > 360.0)
+		tf->loop = 0.0;
+	glUniform1f(shader->unifs[LOOP_U], tf->loop);
+	glUniform1i(shader->unifs[MODE_U], tf->mode);
 }
 
 char	*shader_load(const char *filename)

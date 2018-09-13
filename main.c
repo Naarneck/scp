@@ -160,6 +160,16 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam, t_texture *tex)
 					}
 					break;
 				}
+				case	SDLK_y: 
+				{
+					write(1,"y\n",2);
+					if (tf->mode == 0)
+						tf->mode = 1;
+					else 
+						tf->mode = 0;
+					printf("moooooooododddddddeeeeeeeee :%d \n", tf->mode);
+					break;
+				}
 			}
 	}
 	return 1;
@@ -248,6 +258,7 @@ int main(int argc, char **argv)
 		glClear(GL_COLOR_BUFFER_BIT  | GL_DEPTH_BUFFER_BIT);
 		// glClear(GL_COLOR_BUFFER_BIT);
 		shader_update(&transform, &shader, &camera);
+		shader_mode_update(&shader, &transform);
 		write(1,"texture updated\n",16);
 		write(1,"loop started\n",14);
 		shader_bind(&shader);
