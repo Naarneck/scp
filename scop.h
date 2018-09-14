@@ -91,6 +91,7 @@ typedef	struct	s_objIndex
 	unsigned int	numPositions;
 	unsigned int	is_uvs;
 	unsigned int	is_normals;
+	float			far;
 }				t_objIndex;
 
 typedef	struct	s_mesh
@@ -207,6 +208,7 @@ t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
 t_vector		vcross(t_vector v1, t_vector v2);
 t_vector		vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2);
+float			vmax(t_vector vec);
 
 t_mat4			mat4_scale(t_vector sc);
 t_mat4			mat4_rotateX(float ang);

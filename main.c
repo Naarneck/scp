@@ -147,14 +147,13 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam, t_texture *tex)
 					++tex->id;
 					texture_del(tex);
 					if (tex->id == 0)
-						texture_init("resources/diffuse.jpg", tex);
+						texture_init("resources/gr.bmp", tex);
 					else if (tex->id == 1)
 					{
-						texture_init("resources/diff.jpg", tex);
+						texture_init("resources/diff.bmp", tex);
 					}
 					else if (tex->id == 2)
 					{
-						printf("allo yaoba ato ti?\n");
 						texture_init(tex->name, tex);
 						tex->id = -1;
 					}
@@ -238,11 +237,11 @@ int main(int argc, char **argv)
 	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
 	// vertices = obji.vertices;
 	// indices = obji.indices;
-	cam_init(vinit(0.0f, 2.0f, -3.0f), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
+	cam_init(vinit(0.0f, 0.5f, -3.0f - obji.far), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
 	transform_init(vinit(0.0f, 0.0f, 0.0f), vinit(0.0f, 0.0f, 0.0f), vinit(1.0f, 1.0f, 1.0f), &transform);
 	shader_init("shaders/basic", &shader);
 	write(1,"shader loaded\n",14);
-	texture_init("resources/diffuse.jpg", &texture);
+	texture_init("resources/gr.bmp", &texture);
 	write(1,"texture loaded\n",15);
 	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
 	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);

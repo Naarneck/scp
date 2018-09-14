@@ -96,6 +96,7 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 	obji->numNormals = 0;
 	obji->numTex = 0;
 	obji->numPositions = 0;
+	obji->far = 0.0;
 	// obji->numLines = 0;
 	fd = open(filename, O_RDONLY);
  	// printf("fd # %d\n", fd);
@@ -220,10 +221,7 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				obji->v[obji->numPositions].x = ft_atof(line_arr[1]);
 				obji->v[obji->numPositions].y = ft_atof(line_arr[2]);
 				obji->v[obji->numPositions].z = ft_atof(line_arr[3]);
-				// printf("pos: x:%f y:%f z:%f \n", 
-				// obji->v[obji->numPositions].pos.x,
-				// obji->v[obji->numPositions].pos.y,
-				// obji->v[obji->numPositions].pos.z);
+				obji->far = vmax(obji->v[obji->numPositions]);
 				obji->numPositions++;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
@@ -239,10 +237,6 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				obji->vn[obji->numNormals].x = ft_atof(line_arr[1]);
 				obji->vn[obji->numNormals].y = ft_atof(line_arr[2]);
 				obji->vn[obji->numNormals].z = ft_atof(line_arr[3]);
-				// printf("normals: x:%f y:%f z:%f \n", 
-				// obji->vn[obji->numNormals].x,
-				// obji->vn[obji->numNormals].y,
-				// obji->vn[obji->numNormals].z);
 				obji->numNormals++;
 				
 			}

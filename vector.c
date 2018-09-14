@@ -127,4 +127,13 @@ t_vector	vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2)
 	return (vnorm(n));
 }
 
+float	vmax(t_vector vec)
+{
+	vec.x = fabs(vec.x);
+	vec.y = fabs(vec.y);
+	vec.z = fabs(vec.z);
+	vec.x = vec.x > vec.y ? vec.x : vec.y;
+	vec.z = vec.z > vec.x ? vec.z : vec.x;
+	return (vec.z);
+}
 
