@@ -58,7 +58,7 @@ typedef	struct	s_coord
 
 typedef	struct	s_mat4
 {
-	float		a[4][4]; //wtf 
+	float		a[4][4];
 }				t_mat4;
 
 typedef	struct	s_vertex
@@ -67,20 +67,12 @@ typedef	struct	s_vertex
 	t_coord		uv;
 }				t_vertex;
 
-// typedef	struct	s_indices
-// {
-// 	unsigned int	pos;
-// 	unsigned int	uvs;
-// 	unsigned int	norms;
-// }				t_indices;
-
 typedef	struct	s_objIndex
 {
 	t_vector		*v;
 	t_coord			*vt;
 	t_vector		*vn;
 	t_vector		*normals;
-	// t_indices		*indices;
 	unsigned int	*posid;
 	unsigned int	*uvsid;
 	unsigned int	*normalsid;
@@ -96,8 +88,6 @@ typedef	struct	s_objIndex
 
 typedef	struct	s_mesh
 {
-	// t_vertex		*vertices;
-
 	t_vector		*positions;
 	t_coord			*uvs;
 	t_vector		*normals;
@@ -135,8 +125,6 @@ typedef	struct	s_texture
 typedef	struct	s_cam
 {
 	t_mat4		perspective;
-	// float		zNear;
-	// float		zNear;
 	float		fov;
 	float		aspect;
 	t_vector	pos;
@@ -170,11 +158,10 @@ void			transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf);
 t_mat4			transform_getModel(t_transf *tf);
 
 void			cam_init(t_vector pos, float fov, float aspect, t_cam *cam);
-// t_mat4			cam_getViewProj(t_cam *cam);
 t_mat4			cam_lookAt(t_vector pos, t_vector dir, t_vector up);
 t_mat4			cam_perspective(float fov, float aspect, float zNear, float zFar);
 
-void			shader_init(char *filename, t_shader *shader);
+void			shader_init(t_shader *shader);
 void			shader_del(t_shader *shader);
 GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);

@@ -12,7 +12,6 @@ void	update(t_data *d)
 
 void	quit_scop(t_data *d)
 {
-	// SDL_FreeSurface(screen);
 	SDL_GL_DeleteContext(d->glContext);
 	SDL_DestroyWindow(d->window);
 	SDL_Quit();
@@ -166,7 +165,6 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam, t_texture *tex)
 						tf->mode = 1;
 					else 
 						tf->mode = 0;
-					printf("moooooooododddddddeeeeeeeee :%d \n", tf->mode);
 					break;
 				}
 			}
@@ -185,13 +183,6 @@ int main(int argc, char **argv)
 	t_cam 			camera;
 	t_objIndex		obji;
 
-	// t_vertex 		vertices[]		 = {vertex_init(vinit(-0.5, -0.5, 0.0), cinit(0.0, 0.0)),
-	// 						vertex_init(vinit(0.0, 0.5, 0.0), cinit(0.5, 1.0)),
-	// 						vertex_init(vinit(0.5, -0.5, 0.0), cinit(1.0, 0.0))};
-	// unsigned int 	indices[] = {0, 1, 2};
-
-	t_vertex 		*vertices;
-	unsigned int 	*indices;
 	texture.id = 0;
 	if (argc < 2)
 	{
@@ -230,27 +221,18 @@ int main(int argc, char **argv)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK); 
-	//teapot teapot2 uno drink cat bird Lumia_650 CSH/csh
 	obj_loadFile(argv[1], &obji);
 	write(1,"obj loaded\n",11);
-	// printf("numNormals: %u numPositions: %u numTex: %u numIndices: %u\n",
-	// 	obji.numNormals, obji.numPositions, obji.numTex, obji.numIndices);
-	// vertices = obji.vertices;
-	// indices = obji.indices;
 	cam_init(vinit(0.0f, 0.5f, -3.0f - obji.far), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
 	transform_init(vinit(0.0f, 0.0f, 0.0f), vinit(0.0f, 0.0f, 0.0f), vinit(1.0f, 1.0f, 1.0f), &transform);
-	shader_init("shaders/basic", &shader);
+	shader_init(&shader);
 	write(1,"shader loaded\n",14);
-	texture_init("resources/gr.bmp", &texture);
+	texture_init("resources/diffuse.bmp", &texture);
 	write(1,"texture loaded\n",15);
-	// mesh_init(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]), &mesh);
-	// printf("f:%u vn:%u vt:%u v:%u\n", obji.numIndices, obji.numNormals, obji.numTex, obji.numPositions);
 	mesh_init(&mesh, &obji);
 	write(1,"mesh initialized\n",17);
 	while (d.run)
 	{
-		write(1,"loop started\n",14);
-		// printf("kek\n");
 		SDL_PollEvent(&e);
 		d.run = handleEvent(e, &transform, &camera, &texture);
 		glClearColor(0.0f, 0.95f, 0.85f, 1.0f);
@@ -258,14 +240,9 @@ int main(int argc, char **argv)
 		// glClear(GL_COLOR_BUFFER_BIT);
 		shader_update(&transform, &shader, &camera);
 		shader_mode_update(&shader, &transform);
-		write(1,"texture updated\n",16);
-		write(1,"loop started\n",14);
 		shader_bind(&shader);
-		write(1,"shader binded\n",14);
 		texture_bind(0, &texture);
-		write(1,"texture binded\n",15);
 		mesh_draw(&mesh);
-		write(1,"mesh draw\n",10);
 		update(&d);
 	}
 	shader_del(&shader);

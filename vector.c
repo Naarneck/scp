@@ -118,12 +118,9 @@ t_vector	vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2)
 
 	a = vsub(p1, p0);
 	b = vsub(p2, p1);
-	// printf("a_pos   :  %f / %f / %f\n", a.x, a.y, a.z);
-	// printf("b_pos   :  %f / %f / %f\n", b.x, b.y, b.z);
 	n.x = a.y * b.z - a.z * b.y;
 	n.y = a.z * b.x - a.x * b.z;
 	n.z = a.x * b.y - a.y * b.x;
-	// printf("n_pos   :  %f / %f / %f\n", n.x, n.y, n.z);
 	return (vnorm(n));
 }
 

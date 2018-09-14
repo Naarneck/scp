@@ -65,7 +65,7 @@ t_color		col_clamp(t_color col1)
 	return (res);
 }
 
-t_color		col_mix(t_color base, t_color col2) // test
+t_color		col_mix(t_color base, t_color col2)
 {
 	t_color	res;
 

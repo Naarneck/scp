@@ -30,7 +30,4 @@ t_mat4	transform_getModel(t_transf *tf)
 
 	model.rot = mat4_mult(mat4_mult(model.rotX, model.rotY), model.rotZ);
  	return (mat4_mult(mat4_mult(model.scale, model.rot), model.pos));
- 	// return (mat4_mult(mat4_mult(model.rot, model.scale), model.pos));
- 	// return (mat4_mult(model.pos, model.scale));
- 	// return (model.pos);
 }
