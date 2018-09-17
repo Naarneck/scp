@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   obj_loader.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/17 19:14:39 by izelensk          #+#    #+#             */
+/*   Updated: 2018/09/17 19:14:40 by izelensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
 int			getUV(char *str)
@@ -84,8 +96,8 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 	int		fd;
 	char	*line;
 	char	**line_arr;
-	int 	i;
-	int 	num;
+	int		i;
+	int		num;
 
 	obji->is_uvs = 0;
 	obji->is_normals = 0;
@@ -122,7 +134,6 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 		free(line_arr);
 		free(line);
 	}
-	// close(fd); close in some del function in the end
 	printf("faces:%u vertice normals:%u vertice texture:%u vertices:%u\n",
 	 obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 }
@@ -190,10 +201,10 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 						obji->normalsid[obji->numIndices] = getNormal(line_arr[3 + i]) - 1;
 					else
 						obji->normalsid[obji->numIndices] = 0;
-				i++;
-				++obji->numIndices;
+					i++;
+					++obji->numIndices;
+				}
 			}
-		}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
 			{
 				obji->v[obji->numPositions].x = ft_atof(line_arr[1]);
@@ -222,5 +233,4 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 		free(line_arr);
 		free(line);
 	}
-	// printf("f:%u vn:%u vt:%u v:%u\n", obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
 }

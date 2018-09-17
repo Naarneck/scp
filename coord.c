@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vectors.c                                          :+:      :+:    :+:   */
+/*   coord.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "scop.h"
 
-t_coord	cinit(float x, float y)
+t_coord		cinit(float x, float y)
 {
 	t_coord	vec;
 
@@ -21,28 +21,28 @@ t_coord	cinit(float x, float y)
 	return (vec);
 }
 
-t_coord	csub(t_coord v1, t_coord v2)
+t_coord		csub(t_coord v1, t_coord v2)
 {
 	v1.x -= v2.x;
 	v1.y -= v2.y;
 	return (v1);
 }
 
-t_coord	cadd(t_coord v1, t_coord v2)
+t_coord		cadd(t_coord v1, t_coord v2)
 {
 	v1.x += v2.x;
 	v1.y += v2.y;
 	return (v1);
 }
 
-t_coord	cmul(t_coord v1, float l)
+t_coord		cmul(t_coord v1, float l)
 {
 	v1.x *= l;
 	v1.y *= l;
 	return (v1);
 }
 
-t_coord	cnorm(t_coord v1)
+t_coord		cnorm(t_coord v1)
 {
 	float	length;
 

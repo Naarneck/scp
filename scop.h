@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scop.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/17 19:20:49 by izelensk          #+#    #+#             */
+/*   Updated: 2018/09/17 19:20:55 by izelensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef SCOP_H
 # define SCOP_H
 
@@ -118,8 +130,8 @@ typedef	struct	s_data
 typedef	struct	s_texture
 {
 	GLuint			texture;
-	int 			id;
-	char 			*name;
+	int				id;
+	char			*name;
 }				t_texture;
 
 typedef	struct	s_cam
@@ -147,7 +159,7 @@ typedef	struct	s_transf
 	t_vector	pos;
 	t_vector	rot;
 	t_vector	scale;
-	int 		mode;
+	int			mode;
 	float		loop;
 }				t_transf;
 
@@ -167,9 +179,9 @@ GLuint			shader_create(char *text, GLenum shaderType);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
-void  			shader_mode_update(t_shader *shader, t_transf *tf);
+void			shader_mode_update(t_shader *shader, t_transf *tf);
 
-void 			mesh_init(t_mesh *mesh, t_objIndex *obji);
+void			mesh_init(t_mesh *mesh, t_objIndex *obji);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
 void			mesh_index_obj(t_mesh *mesh, t_objIndex *obji);
@@ -177,14 +189,6 @@ void			mesh_index_obj(t_mesh *mesh, t_objIndex *obji);
 void			texture_del(t_texture *texture);
 void			texture_bind(unsigned int unit, t_texture *texture);
 void			texture_init(const char *fileName, t_texture *texture);
-
-t_color			col_mix(t_color base, t_color col2);
-t_color			col_mult_d(t_color col1, float d);
-t_color			col_mult(t_color col1, t_color col2);
-t_color			col_norm(int col);
-t_color			col_avg(t_color col1, t_color col2);
-t_color			col_clamp(t_color col1);
-t_color			col_add(t_color col1, t_color col2);
 
 t_vector		vinit(float x, float y, float z);
 t_vector		vsub(t_vector v1, t_vector v2);
@@ -202,7 +206,7 @@ t_mat4			mat4_rotateX(float ang);
 t_mat4			mat4_rotateY(float ang);
 t_mat4			mat4_rotateZ(float ang);
 t_mat4			mat4_translate(t_vector pos);
-t_mat4 			mat4_mult(t_mat4 a, t_mat4 b);
+t_mat4			mat4_mult(t_mat4 a, t_mat4 b);
 t_mat4			mat4_transpose(t_mat4 src);
 t_mat4			mat4_identity();
 

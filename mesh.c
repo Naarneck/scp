@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mesh.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/17 19:12:59 by izelensk          #+#    #+#             */
+/*   Updated: 2018/09/17 19:13:01 by izelensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
 void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
@@ -40,10 +52,6 @@ void mesh_index_obj(t_mesh *mesh, t_objIndex *obji)
 
 void mesh_init(t_mesh *mesh, t_objIndex *obji)
 {
-	int i;
-
-	i = 0;
-	printf("f:  %d / %d / %d\n", obji->posid[8], obji->uvsid[8], obji->normalsid[8]);
 	mesh_index_obj(mesh, obji);
 
 	mesh->drawCount = obji->numIndices;

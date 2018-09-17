@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   shader.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/17 19:25:49 by izelensk          #+#    #+#             */
+/*   Updated: 2018/09/17 19:25:52 by izelensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
-void shader_init(t_shader *shader)
+void	shader_init(t_shader *shader)
 {
 	shader->program = glCreateProgram();
 	shader->shaders[0] = shader_create(shader_load("shaders/basic.vs"), GL_VERTEX_SHADER);
@@ -17,7 +29,7 @@ void shader_init(t_shader *shader)
 	shader->unifs[LOOP_U] = glGetUniformLocation(shader->program, "loop");
 }
 
-void shader_del(t_shader *shader)
+void	shader_del(t_shader *shader)
 {
 	unsigned int i;
 	
@@ -32,7 +44,7 @@ void shader_del(t_shader *shader)
 }
 
 
-GLuint shader_create(char *text, GLenum shaderType)
+GLuint	shader_create(char *text, GLenum shaderType)
 {
 	GLuint			shader;
 	const GLchar 	*shaderSrc;
@@ -58,11 +70,11 @@ void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 	t_mat4 view = cam_lookAt(cam->pos, vadd(cam->pos, cam->forward), cam->up);
 	t_mat4 projection = cam->perspective;
 	t_mat4 mvp = mat4_mult(model, mat4_mult(view, projection));
-	transf->loop += 0.05;
+	transf->loop += 0.05f;
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE, &mvp.a[0][0]);
 }
 
-void  shader_mode_update(t_shader *shader, t_transf *tf)
+void	shader_mode_update(t_shader *shader, t_transf *tf)
 {
 	if (tf->loop > 360.0)
 		tf->loop = 0.0;
@@ -72,9 +84,9 @@ void  shader_mode_update(t_shader *shader, t_transf *tf)
 
 char	*shader_load(const char *filename)
 {
-	int fd;
-	char *text;
-	char *line;
+	int		fd;
+	char	*text;
+	char	*line;
 
 	text = ft_strnew(100000);
 	fd = open(filename, O_RDONLY);

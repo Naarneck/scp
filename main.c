@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/17 19:12:21 by izelensk          #+#    #+#             */
+/*   Updated: 2018/09/17 19:12:23 by izelensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "scop.h"
 
 void	data_init(t_data *d)
@@ -28,115 +40,111 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam, t_texture *tex)
 		case SDL_KEYDOWN:
 			switch (event.key.keysym.sym)
 			{
+				//MOvE
 				case 	SDLK_ESCAPE: 
 				{
 					return 0;
 				}
-				case 	SDLK_w: 
+				case 	SDLK_l: 
 				{ 
-					write(1,"w\n",2);
 					tf->pos.x += 0.1;
 					break;
 				}
-				case 	SDLK_s: 
+				case 	SDLK_k: 
 				{
-					write(1,"s\n",2);
 					tf->pos.x -= 0.1;
 					break;
 				}
-				case	SDLK_a: 
+				case	SDLK_f: 
 				{
-					write(1,"a\n",2);
+					tf->pos.z += 0.1;;
+					break;
+				}
+				case	SDLK_g: 
+				{
+					tf->pos.z -= 0.1;;
+					break;
+				}
+				case	SDLK_h: 
+				{
 					tf->pos.y += 0.1;;
 					break;
 				}
-				case	SDLK_d: 
+				case	SDLK_j: 
 				{
-					write(1,"d\n",2);
 					tf->pos.y -= 0.1;;
 					break;
 				}
-				case	SDLK_q: 
+				//SCALE
+				case	SDLK_p: 
 				{
-					write(1,"q\n",2);
 					tf->scale = vmul(tf->scale, 0.75);
 					break;
 				}
-				case	SDLK_e: 
+				case	SDLK_o: 
 				{
-					write(1,"e\n",2);
 					tf->scale = vmul(tf->scale, 1.25);
 					break;
 				}
+				//ROTATE
 				case	SDLK_z: 
 				{
-					write(1,"z\n",2);
 					tf->rot.y += 0.1;
 					break;
 				}
 				case	SDLK_x: 
 				{
-					write(1,"x\n",2);
 					tf->rot.y -= 0.1;
 					break;
 				}
 				case	SDLK_c:
 				{
-					write(1,"c\n",2);
 					tf->rot.z += 0.1;
 					break;
 				}
 				case	SDLK_v: 
 				{
-					write(1,"v\n",2);
 					tf->rot.z -= 0.1;
 					break;
 				}
 				case	SDLK_b:
 				{
-					write(1,"b\n",2);
 					tf->rot.x += 0.1;
 					break;
 				}
 				case	SDLK_n: 
 				{
-					write(1,"n\n",2);
 					tf->rot.x -= 0.1;
 					break;
 				}
-				case	SDLK_f: 
+				//WASDECAM
+				case	SDLK_d: 
 				{
-					write(1,"f\n",2);
 					cam->pos.x -= 0.1;
 					break;
 				}
-				case	SDLK_g: 
+				case	SDLK_a: 
 				{
-					write(1,"g\n",2);
 					cam->pos.x += 0.1;
 					break;
 				}
-				case	SDLK_h: 
+				case	SDLK_q: 
 				{
-					write(1,"h\n",2);
 					cam->pos.y -= 0.1;
 					break;
 				}
-				case	SDLK_j: 
+				case	SDLK_e: 
 				{
-					write(1,"j\n",2);
 					cam->pos.y += 0.1;
 					break;
 				}
-				case	SDLK_k: 
+				case	SDLK_s: 
 				{
-					write(1,"k\n",2);
 					cam->pos.z -= 1.1;
 					break;
 				}
-				case	SDLK_l: 
+				case	SDLK_w: 
 				{
-					write(1,"l\n",2);
 					cam->pos.z += 1.1;
 					break;
 				}
@@ -146,10 +154,10 @@ int		handleEvent(SDL_Event event, t_transf *tf, t_cam *cam, t_texture *tex)
 					++tex->id;
 					texture_del(tex);
 					if (tex->id == 0)
-						texture_init("resources/gr.bmp", tex);
+						texture_init("resources/diffuse.bmp", tex);
 					else if (tex->id == 1)
 					{
-						texture_init("resources/diff.bmp", tex);
+						texture_init("resources/ponie.bmp", tex);
 					}
 					else if (tex->id == 2)
 					{
@@ -188,15 +196,19 @@ int main(int argc, char **argv)
 	{
 		write(1, "Usage: ./scop [obj path] [texture path]\n", 40);
 		write(1, "\tkeys:\n", 7);
-		write(1, "\tw,a,s,d \t- move object x,y,z\n", 30);
-		write(1, "\tq,e \t- scale object\n", 21);
+		write(1, "\tw,s,a,d,q,e \t- move camera x,y,z\n", 35);
+		write(1, "\tf,g,h,j,k,l \t- move object x,y,z\n", 35);
 		write(1, "\tz,x,c,v,b,n \t- rotate object\n", 30);
-		write(1, "\tf,g,h,j\t- move camera\n", 23);
-		write(1, "\tt \t- apply texture\n", 20);
+		write(1, "\tf,g,h,j\t\t- move camera\n", 24);
+		write(1, "\tt \t\t- apply texture\n", 21);
+		write(1, "\ty \t\t- blinking shader\n", 23);
 		return (0);
 	}
+
 	if (argc >= 3)
 		texture.name = argv[2];
+	else
+		texture.name = "resources/gr.bmp";
 	data_init(&d);
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
@@ -220,7 +232,7 @@ int main(int argc, char **argv)
 	glEnable(GL_DEPTH_CLAMP);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK); 
+	glCullFace(GL_BACK);
 	obj_loadFile(argv[1], &obji);
 	write(1,"obj loaded\n",11);
 	cam_init(vinit(0.0f, 0.5f, -3.0f - obji.far), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);

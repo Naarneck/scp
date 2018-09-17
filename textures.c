@@ -1,35 +1,46 @@
-#include "scop.h"
-#include "stb_image.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   textures.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: izelensk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/09/17 19:28:11 by izelensk          #+#    #+#             */
+/*   Updated: 2018/09/17 19:28:12 by izelensk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-unsigned char		*load_bmp(const char *filename, unsigned int *width, unsigned int *height)
+#include "scop.h"
+
+unsigned char	*load_bmp(const char *filename, unsigned int *width, unsigned int *height)
 {
-	unsigned char		header[54];
-	unsigned int		datapos;
-	unsigned int		size;
-	unsigned char		*data;
 	FILE				*file;
+	unsigned char		info[54];
+	unsigned char		*data;
+	unsigned int		start;
+	unsigned int		size;
 
 	file = fopen(filename, "rb");
 	if (!file)
 		return (NULL);
-	if (fread(header, 1, 54, file) != 54)
+	if (fread(info, 1, 54, file) != 54)
 		return (NULL);
-	if (header[0] != 'B' || header[1] != 'M')
+	if (info[0] != 'B' || info[1] != 'M')
 		return (NULL);
-	datapos = *(int*)&(header[0x0A]);
-	size = *(int*)&(header[0x22]);
-	*width = *(int*)&(header[0x12]);
-	*height = *(int*)&(header[0x16]);
-	if (size == 0)
+	start = *(unsigned int*)&(info[0x0A]);
+	size = *(unsigned int*)&(info[0x22]);
+	*width = *(unsigned int*)&(info[0x12]);
+	*height = *(unsigned int*)&(info[0x16]);
+	if (!size)
 		size = (*width) * (*height) * 3;
-	if (datapos == 0)
-		datapos = 54;
-	data = malloc(sizeof(unsigned char) * size);
+	if (!start)
+		start = 54;
+	data = (unsigned char *)malloc(sizeof(unsigned char) * size);
 	fread(data, 1, size, file);
 	return (data);
 }
 
-void	texture_init(const char *filename, t_texture *texture)
+void			texture_init(const char *filename, t_texture *texture)
 {
 	unsigned int width;
 	unsigned int height;
@@ -48,14 +59,14 @@ void	texture_init(const char *filename, t_texture *texture)
 	free (data);
 }
 
-void	texture_bind(unsigned int unit, t_texture *texture)
+void			texture_bind(unsigned int unit, t_texture *texture)
 {
 	glActiveTexture(GL_TEXTURE0 + unit);
 	glUniform1i(GL_TEXTURE0, 0);
 	glBindTexture(GL_TEXTURE_2D, texture->texture);
 }
 
-void	texture_del(t_texture *texture)
+void			texture_del(t_texture *texture)
 {
 	glDeleteTextures(1, &texture->texture);
 }
