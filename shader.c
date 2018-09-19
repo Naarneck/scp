@@ -15,8 +15,10 @@
 void	shader_init(t_shader *shader)
 {
 	shader->program = glCreateProgram();
-	shader->shaders[0] = shader_create(shader_load("shaders/basic.vs"), GL_VERTEX_SHADER);
-	shader->shaders[1] = shader_create(shader_load("shaders/basic.fs"), GL_FRAGMENT_SHADER);
+	shader->shaders[0] = shader_create(shader_load("shaders/basic.vs"),
+															GL_VERTEX_SHADER);
+	shader->shaders[1] = shader_create(shader_load("shaders/basic.fs"),
+															GL_FRAGMENT_SHADER);
 	glAttachShader(shader->program, shader->shaders[0]);
 	glAttachShader(shader->program, shader->shaders[1]);
 	glBindAttribLocation(shader->program, 0, "position");
@@ -24,7 +26,8 @@ void	shader_init(t_shader *shader)
 	glBindAttribLocation(shader->program, 2, "normal");
 	glLinkProgram(shader->program);
 	glValidateProgram(shader->program);
-	shader->unifs[TRANSFORM_U] = glGetUniformLocation(shader->program, "transform");
+	shader->unifs[TRANSFORM_U] = glGetUniformLocation(shader->program,
+																"transform");
 	shader->unifs[MODE_U] = glGetUniformLocation(shader->program, "mode");
 	shader->unifs[LOOP_U] = glGetUniformLocation(shader->program, "loop");
 }
@@ -32,7 +35,7 @@ void	shader_init(t_shader *shader)
 void	shader_del(t_shader *shader)
 {
 	unsigned int i;
-	
+
 	i = 0;
 	while (i < NUM_SHADERS)
 	{
@@ -43,20 +46,19 @@ void	shader_del(t_shader *shader)
 	glDeleteProgram(shader->program);
 }
 
-
-GLuint	shader_create(char *text, GLenum shaderType)
+GLuint	shader_create(char *text, GLenum shadertype)
 {
 	GLuint			shader;
-	const GLchar 	*shaderSrc;
+	const GLchar	*shadersrc;
 
-	shader = glCreateShader(shaderType);
+	shader = glCreateShader(shadertype);
 	if (!shader)
 		printf("error create shader\n");
-	shaderSrc = text;
-	glShaderSource(shader, 1, &shaderSrc, NULL);
+	shadersrc = text;
+	glShaderSource(shader, 1, &shadersrc, NULL);
 	glCompileShader(shader);
 	free(text);
-	return shader;
+	return (shader);
 }
 
 void	shader_bind(t_shader *shader)
@@ -66,10 +68,15 @@ void	shader_bind(t_shader *shader)
 
 void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 {
-	t_mat4 model = transform_getModel(transf);
-	t_mat4 view = cam_lookAt(cam->pos, vadd(cam->pos, cam->forward), cam->up);
-	t_mat4 projection = cam->perspective;
-	t_mat4 mvp = mat4_mult(model, mat4_mult(view, projection));
+	t_mat4	model;
+	t_mat4	view;
+	t_mat4	projection;
+	t_mat4	mvp;
+
+	model = transform_getmodel(transf);
+	view = cam_lookat(cam->pos, vadd(cam->pos, cam->forward), cam->up);
+	projection = cam->perspective;
+	mvp = mat4_mult(model, mat4_mult(view, projection));
 	transf->loop += 0.05f;
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE, &mvp.a[0][0]);
 }

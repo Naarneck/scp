@@ -14,30 +14,28 @@
 
 t_mat4		mat4_mult(t_mat4 a, t_mat4 b)
 {
-	t_mat4 m;
+	t_mat4	m;
+	int		i;
 
-    m.a[0][0] = a.a[0][0] * b.a[0][0] + a.a[0][1] * b.a[1][0] + a.a[0][2] * b.a[2][0] + a.a[0][3] * b.a[3][0];
-    m.a[0][1] = a.a[0][0] * b.a[0][1] + a.a[0][1] * b.a[1][1] + a.a[0][2] * b.a[2][1] + a.a[0][3] * b.a[3][1];
-    m.a[0][2] = a.a[0][0] * b.a[0][2] + a.a[0][1] * b.a[1][2] + a.a[0][2] * b.a[2][2] + a.a[0][3] * b.a[3][2];
-    m.a[0][3] = a.a[0][0] * b.a[0][3] + a.a[0][1] * b.a[1][3] + a.a[0][2] * b.a[2][3] + a.a[0][3] * b.a[3][3];
-    m.a[1][0] = a.a[1][0] * b.a[0][0] + a.a[1][1] * b.a[1][0] + a.a[1][2] * b.a[2][0] + a.a[1][3] * b.a[3][0];
-    m.a[1][1] = a.a[1][0] * b.a[0][1] + a.a[1][1] * b.a[1][1] + a.a[1][2] * b.a[2][1] + a.a[1][3] * b.a[3][1];
-    m.a[1][2] = a.a[1][0] * b.a[0][2] + a.a[1][1] * b.a[1][2] + a.a[1][2] * b.a[2][2] + a.a[1][3] * b.a[3][2];
-    m.a[1][3] = a.a[1][0] * b.a[0][3] + a.a[1][1] * b.a[1][3] + a.a[1][2] * b.a[2][3] + a.a[1][3] * b.a[3][3];
-    m.a[2][0] = a.a[2][0] * b.a[0][0] + a.a[2][1] * b.a[1][0] + a.a[2][2] * b.a[2][0] + a.a[2][3] * b.a[3][0];
-    m.a[2][1] = a.a[2][0] * b.a[0][1] + a.a[2][1] * b.a[1][1] + a.a[2][2] * b.a[2][1] + a.a[2][3] * b.a[3][1];
-    m.a[2][2] = a.a[2][0] * b.a[0][2] + a.a[2][1] * b.a[1][2] + a.a[2][2] * b.a[2][2] + a.a[2][3] * b.a[3][2];
-    m.a[2][3] = a.a[2][0] * b.a[0][3] + a.a[2][1] * b.a[1][3] + a.a[2][2] * b.a[2][3] + a.a[2][3] * b.a[3][3];
-    m.a[3][0] = a.a[3][0] * b.a[0][0] + a.a[3][1] * b.a[1][0] + a.a[3][2] * b.a[2][0] + a.a[3][3] * b.a[3][0];
-    m.a[3][1] = a.a[3][0] * b.a[0][1] + a.a[3][1] * b.a[1][1] + a.a[3][2] * b.a[2][1] + a.a[3][3] * b.a[3][1];
-    m.a[3][2] = a.a[3][0] * b.a[0][2] + a.a[3][1] * b.a[1][2] + a.a[3][2] * b.a[2][2] + a.a[3][3] * b.a[3][2];
-    m.a[3][3] = a.a[3][0] * b.a[0][3] + a.a[3][1] * b.a[1][3] + a.a[3][2] * b.a[2][3] + a.a[3][3] * b.a[3][3];
-    return(m);
+	i = 0;
+	while (i < 4)
+	{
+		m.a[i][0] = a.a[i][0] * b.a[0][0] + a.a[i][1] * b.a[1][0]
+		+ a.a[i][2] * b.a[2][0] + a.a[i][3] * b.a[3][0];
+		m.a[i][1] = a.a[i][0] * b.a[0][1] + a.a[i][1] * b.a[1][1]
+		+ a.a[i][2] * b.a[2][1] + a.a[i][3] * b.a[3][1];
+		m.a[i][2] = a.a[i][0] * b.a[0][2] + a.a[i][1] * b.a[1][2]
+		+ a.a[i][2] * b.a[2][2] + a.a[i][3] * b.a[3][2];
+		m.a[i][3] = a.a[i][0] * b.a[0][3] + a.a[i][1] * b.a[1][3]
+		+ a.a[i][2] * b.a[2][3] + a.a[i][3] * b.a[3][3];
+		i++;
+	}
+	return (m);
 }
 
-t_mat4		mat4_identity()
+t_mat4		mat4_identity(void)
 {
-	t_mat4 tr;
+	t_mat4	tr;
 
 	tr.a[0][0] = 1.0f;
 	tr.a[0][1] = 0.0f;
@@ -55,13 +53,12 @@ t_mat4		mat4_identity()
 	tr.a[3][1] = 0.0f;
 	tr.a[3][2] = 0.0f;
 	tr.a[3][3] = 1.0f;
-
 	return (tr);
 }
 
 t_mat4		mat4_translate(t_vector pos)
 {
-	t_mat4 tr;
+	t_mat4	tr;
 
 	tr.a[0][0] = 1.0f;
 	tr.a[0][1] = 0.0f;
@@ -82,10 +79,10 @@ t_mat4		mat4_translate(t_vector pos)
 	return (tr);
 }
 
-t_mat4		mat4_rotateX(float ang)
+t_mat4		mat4_rotatex(float ang)
 {
-	t_mat4 tr;
-	
+	t_mat4	tr;
+
 	tr.a[0][0] = 1.0f;
 	tr.a[0][1] = 0.0f;
 	tr.a[0][2] = 0.0f;
@@ -102,12 +99,12 @@ t_mat4		mat4_rotateX(float ang)
 	tr.a[3][1] = 0.0f;
 	tr.a[3][2] = 0.0f;
 	tr.a[3][3] = 1.0f;
-	return (tr);	
+	return (tr);
 }
 
-t_mat4		mat4_rotateY(float ang)
+t_mat4		mat4_rotatey(float ang)
 {
-	t_mat4 tr;
+	t_mat4	tr;
 
 	tr.a[0][0] = cos(ang);
 	tr.a[0][1] = 0.0f;
@@ -125,13 +122,12 @@ t_mat4		mat4_rotateY(float ang)
 	tr.a[3][1] = 0.0f;
 	tr.a[3][2] = 0.0f;
 	tr.a[3][3] = 1.0f;
-
-	return (tr);	
+	return (tr);
 }
 
-t_mat4		mat4_rotateZ(float ang)
+t_mat4		mat4_rotatez(float ang)
 {
-	t_mat4 tr;
+	t_mat4	tr;
 
 	tr.a[0][0] = cos(ang);
 	tr.a[0][1] = sin(ang);
@@ -149,12 +145,12 @@ t_mat4		mat4_rotateZ(float ang)
 	tr.a[3][1] = 0.0f;
 	tr.a[3][2] = 0.0f;
 	tr.a[3][3] = 1.0f;
-	return (tr);	
+	return (tr);
 }
 
 t_mat4		mat4_scale(t_vector sc)
 {
-	t_mat4 tr;
+	t_mat4	tr;
 
 	tr.a[0][0] = sc.x;
 	tr.a[0][1] = 0.0f;
@@ -172,13 +168,12 @@ t_mat4		mat4_scale(t_vector sc)
 	tr.a[3][1] = 0.0f;
 	tr.a[3][2] = 0.0f;
 	tr.a[3][3] = 1.0f;
-
-	return (tr);	
+	return (tr);
 }
 
 t_mat4		mat4_transpose(t_mat4 src)
 {
-	t_mat4 tr;
+	t_mat4	tr;
 
 	tr.a[0][0] = src.a[0][0];
 	tr.a[0][1] = src.a[1][0];
@@ -196,6 +191,5 @@ t_mat4		mat4_transpose(t_mat4 src)
 	tr.a[3][1] = src.a[1][3];
 	tr.a[3][2] = src.a[2][3];
 	tr.a[3][3] = src.a[3][3];
-	return (tr);	
+	return (tr);
 }
-

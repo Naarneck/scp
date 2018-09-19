@@ -20,7 +20,7 @@ void	cam_init(t_vector pos, float fov, float aspect, t_cam *cam)
 	cam->up = vinit(0.0f, 1.0f, 0.0f);
 }
 
-t_mat4	cam_lookAt(t_vector pos, t_vector dir, t_vector up)
+t_mat4	cam_lookat(t_vector pos, t_vector dir, t_vector up)
 {
 	t_mat4		mat;
 	t_vector	x;
@@ -49,29 +49,29 @@ t_mat4	cam_lookAt(t_vector pos, t_vector dir, t_vector up)
 	return (mat);
 }
 
-t_mat4	cam_perspective(float fov, float aspect, float zNear, float zFar)
+t_mat4	cam_perspective(float fov, float aspect, float znear, float zfar)
 {
 	t_mat4	mat;
-	float	tanHalfFov;
-	float	zRange;
+	float	tanhalffov;
+	float	zrange;
 
-	tanHalfFov = tan(TORADS(fov * 0.5f));
-	zRange = (zNear - zFar);
-	mat.a[0][0] = 1.0f / (tanHalfFov * aspect);
+	tanhalffov = tan(TORADS(fov * 0.5f));
+	zrange = (znear - zfar);
+	mat.a[0][0] = 1.0f / (tanhalffov * aspect);
 	mat.a[0][1] = 0.0f;
 	mat.a[0][2] = 0.0f;
 	mat.a[0][3] = 0.0f;
 	mat.a[1][0] = 0.0f;
-	mat.a[1][1] = 1.0f / tanHalfFov;
+	mat.a[1][1] = 1.0f / tanhalffov;
 	mat.a[1][2] = 0.0f;
 	mat.a[1][3] = 0.0f;
 	mat.a[2][0] = 0.0f;
 	mat.a[2][1] = 0.0f;
-	mat.a[2][2] = -(-zNear - zFar) / zRange;
+	mat.a[2][2] = -(-znear - zfar) / zrange;
 	mat.a[2][3] = -1.0f;
 	mat.a[3][0] = 0.0f;
 	mat.a[3][1] = 0.0f;
-	mat.a[3][2] = 2.0f * zFar * zNear / zRange;
+	mat.a[3][2] = 2.0f * zfar * znear / zrange;
 	mat.a[3][3] = 0.0f;
 	return (mat);
 }

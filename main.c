@@ -24,7 +24,7 @@ void	update(t_data *d)
 
 void	quit_scop(t_data *d)
 {
-	SDL_GL_DeleteContext(d->glContext);
+	SDL_GL_DeleteContext(d->glcontext);
 	SDL_DestroyWindow(d->window);
 	SDL_Quit();
 }
@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 	t_texture		texture;
 	t_transf		transform;
 	t_cam 			camera;
-	t_objIndex		obji;
+	t_objindex		obji;
 
 	texture.id = 0;
 	if (argc < 2)
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
 
 	d.window = SDL_CreateWindow("Scop", SDL_WINDOWPOS_CENTERED,
 			SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT, SDL_WINDOW_OPENGL);
-	d.glContext = SDL_GL_CreateContext(d.window);
+	d.glcontext = SDL_GL_CreateContext(d.window);
 	glewExperimental = GL_TRUE;
 	d.status = glewInit();
 
@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	obj_loadFile(argv[1], &obji);
+	obj_loadfile(argv[1], &obji);
 	write(1,"obj loaded\n",11);
 	cam_init(vinit(0.0f, 0.5f, -3.0f - obji.far), 70.0f, (float)WIDTH / (float)HEIGHT, &camera);
 	transform_init(vinit(0.0f, 0.0f, 0.0f), vinit(0.0f, 0.0f, 0.0f), vinit(1.0f, 1.0f, 1.0f), &transform);

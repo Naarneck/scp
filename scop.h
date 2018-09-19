@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <stdlib.h>
-# include <GL/glew.h> 
+# include <GL/glew.h>
 # include <OpenGL/gl.h>
 # include <SDL2/SDL.h>
 # include "libft/libft.h"
@@ -27,13 +27,11 @@
 # define WIDTH 1200
 # define HEIGHT 800
 # define NUM_BUFFERS 3
-// # define INDEX_TB 3
-// # define INDEX_VB 2
+
 # define NORMAL_VB 2
 # define TEXCOORD_VB 1
 # define POSITION_VB 0
 
- 
 # define NUM_SHADERS 2
 
 # define NUM_UNIFORMS 3
@@ -73,13 +71,7 @@ typedef	struct	s_mat4
 	float		a[4][4];
 }				t_mat4;
 
-typedef	struct	s_vertex
-{
-	t_vector	pos;
-	t_coord		uv;
-}				t_vertex;
-
-typedef	struct	s_objIndex
+typedef	struct	s_objindex
 {
 	t_vector		*v;
 	t_coord			*vt;
@@ -89,14 +81,14 @@ typedef	struct	s_objIndex
 	unsigned int	*uvsid;
 	unsigned int	*normalsid;
 
-	unsigned int	numIndices;
-	unsigned int	numTex;
-	unsigned int	numNormals;
-	unsigned int	numPositions;
+	unsigned int	numindices;
+	unsigned int	numtex;
+	unsigned int	numnormals;
+	unsigned int	numpositions;
 	unsigned int	is_uvs;
 	unsigned int	is_normals;
 	float			far;
-}				t_objIndex;
+}				t_objindex;
 
 typedef	struct	s_mesh
 {
@@ -104,10 +96,10 @@ typedef	struct	s_mesh
 	t_coord			*uvs;
 	t_vector		*normals;
 
-	unsigned int	numVert;
-	GLuint			vertexArrObj;
-	GLuint			vertexArrBuf[NUM_BUFFERS];
-	unsigned int	drawCount;
+	unsigned int	numvert;
+	GLuint			vertexarrobj;
+	GLuint			vertexarrbuf[NUM_BUFFERS];
+	unsigned int	drawcount;
 
 }				t_mesh;
 
@@ -121,7 +113,7 @@ typedef	struct	s_shader
 typedef	struct	s_data
 {
 	SDL_Window		*window;
-	SDL_GLContext	glContext;
+	SDL_GLContext	glcontext;
 	GLenum			status;
 	int				run;
 
@@ -148,9 +140,9 @@ typedef	struct	s_model
 {
 	t_mat4		pos;
 	t_mat4		rot;
-	t_mat4		rotX;
-	t_mat4		rotY;
-	t_mat4		rotZ;
+	t_mat4		rotx;
+	t_mat4		roty;
+	t_mat4		rotz;
 	t_mat4		scale;
 }				t_model;
 
@@ -163,32 +155,34 @@ typedef	struct	s_transf
 	float		loop;
 }				t_transf;
 
-void			obj_checkFile(const char *filename, t_objIndex *obji);
-void			obj_loadFile(const char *filename, t_objIndex *obji);
+void			obj_checkfile(const char *filename, t_objindex *obji);
+void			obj_loadfile(const char *filename, t_objindex *obji);
 
-void			transform_init(t_vector pos, t_vector rot, t_vector scale, t_transf *tf);
-t_mat4			transform_getModel(t_transf *tf);
+void			transform_init(t_vector pos, t_vector rot,
+												t_vector scale, t_transf *tf);
+t_mat4			transform_getmodel(t_transf *tf);
 
 void			cam_init(t_vector pos, float fov, float aspect, t_cam *cam);
-t_mat4			cam_lookAt(t_vector pos, t_vector dir, t_vector up);
-t_mat4			cam_perspective(float fov, float aspect, float zNear, float zFar);
+t_mat4			cam_lookat(t_vector pos, t_vector dir, t_vector up);
+t_mat4			cam_perspective(float fov, float aspect,
+													float znear, float zfar);
 
 void			shader_init(t_shader *shader);
 void			shader_del(t_shader *shader);
-GLuint			shader_create(char *text, GLenum shaderType);
+GLuint			shader_create(char *text, GLenum shadertype);
 void			shader_bind(t_shader *shader);
 char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
 void			shader_mode_update(t_shader *shader, t_transf *tf);
 
-void			mesh_init(t_mesh *mesh, t_objIndex *obji);
+void			mesh_init(t_mesh *mesh, t_objindex *obji);
 void			mesh_del(t_mesh *mesh);
 void			mesh_draw(t_mesh *mesh);
-void			mesh_index_obj(t_mesh *mesh, t_objIndex *obji);
+void			mesh_index_obj(t_mesh *mesh, t_objindex *obji);
 
 void			texture_del(t_texture *texture);
 void			texture_bind(unsigned int unit, t_texture *texture);
-void			texture_init(const char *fileName, t_texture *texture);
+void			texture_init(const char *filename, t_texture *texture);
 
 t_vector		vinit(float x, float y, float z);
 t_vector		vsub(t_vector v1, t_vector v2);
@@ -198,21 +192,17 @@ float			vlen(t_vector v1);
 t_vector		vnorm(t_vector v1);
 float			vdot(t_vector v1, t_vector v2);
 t_vector		vcross(t_vector v1, t_vector v2);
-t_vector		vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2);
+t_vector		vcalcnormal(t_vector p0, t_vector p1, t_vector p2);
 float			vmax(t_vector vec);
 
 t_mat4			mat4_scale(t_vector sc);
-t_mat4			mat4_rotateX(float ang);
-t_mat4			mat4_rotateY(float ang);
-t_mat4			mat4_rotateZ(float ang);
+t_mat4			mat4_rotatex(float ang);
+t_mat4			mat4_rotatey(float ang);
+t_mat4			mat4_rotatez(float ang);
 t_mat4			mat4_translate(t_vector pos);
 t_mat4			mat4_mult(t_mat4 a, t_mat4 b);
 t_mat4			mat4_transpose(t_mat4 src);
-t_mat4			mat4_identity();
-
-t_vertex		vertex_init(t_vector pos, t_coord uv);
-t_coord			vertex_getUV(t_vertex vertex);
-t_vector		vertex_getPos(t_vertex vertex);
+t_mat4			mat4_identity(void);
 
 t_coord			cinit(float x, float y);
 t_coord			csub(t_coord v1, t_coord v2);

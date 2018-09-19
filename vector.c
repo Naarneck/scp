@@ -79,38 +79,7 @@ t_vector	vcross(t_vector v1, t_vector v2)
 	return (vec);
 }
 
-t_vertex	vertex_init(t_vector pos, t_coord uv)
-{
-	t_vertex	vert;
-
-	vert.pos.x = pos.x;
-	vert.pos.y = pos.y;
-	vert.pos.z = pos.z;
-	vert.uv.x = uv.x;
-	vert.uv.y = uv.y;
-	return (vert);
-}
-
-t_vector	vertex_getPos(t_vertex vertex)
-{
-	t_vector	vec;
-
-	vec.x = vertex.pos.x;
-	vec.y = vertex.pos.y;
-	vec.z = vertex.pos.z;
-	return (vec);
-}
-
-t_coord		vertex_getUV(t_vertex vertex)
-{
-	t_coord	coord;
-
-	coord.x = vertex.uv.x;
-	coord.y = vertex.uv.y;
-	return (coord);
-}
-
-t_vector	vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2)
+t_vector	vcalcnormal(t_vector p0, t_vector p1, t_vector p2)
 {
 	t_vector n;
 	t_vector a;
@@ -124,7 +93,7 @@ t_vector	vcalcNormal(t_vector p0, t_vector p1 ,t_vector p2)
 	return (vnorm(n));
 }
 
-float	vmax(t_vector vec)
+float		vmax(t_vector vec)
 {
 	vec.x = fabs(vec.x);
 	vec.y = fabs(vec.y);
@@ -133,4 +102,3 @@ float	vmax(t_vector vec)
 	vec.z = vec.z > vec.x ? vec.z : vec.x;
 	return (vec.z);
 }
-

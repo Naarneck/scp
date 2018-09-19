@@ -12,7 +12,7 @@
 
 #include "scop.h"
 
-int			getUV(char *str)
+int			getuv(char *str)
 {
 	int		i;
 	int		first_slash;
@@ -38,7 +38,7 @@ int			getUV(char *str)
 	return (0);
 }
 
-int			getNormal(char *str)
+int			getnormal(char *str)
 {
 	int		i;
 	int		first_slash;
@@ -91,7 +91,7 @@ float		ft_atof(char *str)
 	return (n * minus);
 }
 
-void		obj_checkFile(const char *filename, t_objIndex *obji)
+void		obj_checkfile(const char *filename, t_objindex *obji)
 {
 	int		fd;
 	char	*line;
@@ -101,10 +101,10 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 
 	obji->is_uvs = 0;
 	obji->is_normals = 0;
-	obji->numIndices = 0;
-	obji->numNormals = 0;
-	obji->numTex = 0;
-	obji->numPositions = 0;
+	obji->numindices = 0;
+	obji->numnormals = 0;
+	obji->numtex = 0;
+	obji->numpositions = 0;
 	obji->far = 0.0;
 	fd = open(filename, O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
@@ -115,18 +115,18 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 		{
 			if (line_arr[0][0] == 'f')
 			{
-				obji->numIndices += (num - 3);
-				if (getUV(line_arr[1]) > 0 )
+				obji->numindices += (num - 3);
+				if (getuv(line_arr[1]) > 0 )
 					obji->is_uvs = 1;
-				if (getNormal(line_arr[1]) > 0)
+				if (getnormal(line_arr[1]) > 0)
 					obji->is_normals = 1;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
-				obji->numTex++;
+				obji->numtex++;
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 'n')
-				obji->numNormals++;
+				obji->numnormals++;
 			else if (line_arr[0][0] == 'v')
-				obji->numPositions++;
+				obji->numpositions++;
 		}
 		i = -1;
 		while (line_arr[++i])
@@ -135,10 +135,10 @@ void		obj_checkFile(const char *filename, t_objIndex *obji)
 		free(line);
 	}
 	printf("faces:%u vertice normals:%u vertice texture:%u vertices:%u\n",
-	 obji->numIndices, obji->numNormals, obji->numTex, obji->numPositions);
+	 obji->numindices, obji->numnormals, obji->numtex, obji->numpositions);
 }
 
-void	obj_loadFile(const char *filename, t_objIndex *obji)
+void	obj_loadfile(const char *filename, t_objindex *obji)
 {
 	char	*line;
 	char	**line_arr;
@@ -146,17 +146,17 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 	int		num;
 	int		fd;
 
-	obj_checkFile(filename, obji);
-	obji->v = (t_vector *)malloc(sizeof(t_vector) * obji->numPositions);
-	obji->vt = (t_coord *)malloc(sizeof(t_coord) * obji->numTex);
-	obji->vn = (t_vector *)malloc(sizeof(t_vector) * obji->numNormals);
-	obji->posid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
-	obji->uvsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
-	obji->normalsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numIndices * 3);
-	obji->numIndices = 0;
-	obji->numPositions = 0;
-	obji->numTex = 0;
-	obji->numNormals = 0;
+	obj_checkfile(filename, obji);
+	obji->v = (t_vector *)malloc(sizeof(t_vector) * obji->numpositions);
+	obji->vt = (t_coord *)malloc(sizeof(t_coord) * obji->numtex);
+	obji->vn = (t_vector *)malloc(sizeof(t_vector) * obji->numnormals);
+	obji->posid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numindices * 3);
+	obji->uvsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numindices * 3);
+	obji->normalsid = (unsigned int *)malloc(sizeof(unsigned int) * obji->numindices * 3);
+	obji->numindices = 0;
+	obji->numpositions = 0;
+	obji->numtex = 0;
+	obji->numnormals = 0;
 	fd = open(filename, O_RDONLY);
 	while (get_next_line(fd, &line) == 1)
 	{
@@ -172,59 +172,59 @@ void	obj_loadFile(const char *filename, t_objIndex *obji)
 				i = 0;
 				while (i < num - 3)
 				{
-					obji->posid[obji->numIndices] = ft_atoi(line_arr[1]) - 1;
+					obji->posid[obji->numindices] = ft_atoi(line_arr[1]) - 1;
 					if (obji->is_uvs)
-						obji->uvsid[obji->numIndices] = getUV(line_arr[1]) - 1;
+						obji->uvsid[obji->numindices] = getuv(line_arr[1]) - 1;
 					else
-						obji->uvsid[obji->numIndices] = 0;
+						obji->uvsid[obji->numindices] = 0;
 					if (obji->is_normals)
-						obji->normalsid[obji->numIndices] = getNormal(line_arr[1]) - 1;
+						obji->normalsid[obji->numindices] = getnormal(line_arr[1]) - 1;
 					else
-						obji->normalsid[obji->numIndices] = 0;
+						obji->normalsid[obji->numindices] = 0;
 
-					obji->posid[++obji->numIndices] = ft_atoi(line_arr[2 + i]) - 1;
+					obji->posid[++obji->numindices] = ft_atoi(line_arr[2 + i]) - 1;
 					if (obji->is_uvs)
-						obji->uvsid[obji->numIndices] = getUV(line_arr[2 + i]) - 1;
+						obji->uvsid[obji->numindices] = getuv(line_arr[2 + i]) - 1;
 					else
-						obji->uvsid[obji->numIndices] = 0;
+						obji->uvsid[obji->numindices] = 0;
 					if (obji->is_normals)
-						obji->normalsid[obji->numIndices] = getNormal(line_arr[2 + i]) - 1;
+						obji->normalsid[obji->numindices] = getnormal(line_arr[2 + i]) - 1;
 					else
-						obji->normalsid[obji->numIndices] = 0;
+						obji->normalsid[obji->numindices] = 0;
 					
-					obji->posid[++obji->numIndices] = ft_atoi(line_arr[3 + i]) - 1;
+					obji->posid[++obji->numindices] = ft_atoi(line_arr[3 + i]) - 1;
 					if (obji->is_uvs)
-						obji->uvsid[obji->numIndices] = getUV(line_arr[3 + i]) - 1;
+						obji->uvsid[obji->numindices] = getuv(line_arr[3 + i]) - 1;
 					else
-						obji->uvsid[obji->numIndices] = 0;
+						obji->uvsid[obji->numindices] = 0;
 					if (obji->is_normals)
-						obji->normalsid[obji->numIndices] = getNormal(line_arr[3 + i]) - 1;
+						obji->normalsid[obji->numindices] = getnormal(line_arr[3 + i]) - 1;
 					else
-						obji->normalsid[obji->numIndices] = 0;
+						obji->normalsid[obji->numindices] = 0;
 					i++;
-					++obji->numIndices;
+					++obji->numindices;
 				}
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == '\0')
 			{
-				obji->v[obji->numPositions].x = ft_atof(line_arr[1]);
-				obji->v[obji->numPositions].y = ft_atof(line_arr[2]);
-				obji->v[obji->numPositions].z = ft_atof(line_arr[3]);
-				obji->far = vmax(obji->v[obji->numPositions]);
-				obji->numPositions++;
+				obji->v[obji->numpositions].x = ft_atof(line_arr[1]);
+				obji->v[obji->numpositions].y = ft_atof(line_arr[2]);
+				obji->v[obji->numpositions].z = ft_atof(line_arr[3]);
+				obji->far = vmax(obji->v[obji->numpositions]);
+				obji->numpositions++;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 't')
 			{
-				obji->vt[obji->numTex].x = ft_atof(line_arr[1]);
-				obji->vt[obji->numTex].y = ft_atof(line_arr[2]);
-				obji->numTex++;
+				obji->vt[obji->numtex].x = ft_atof(line_arr[1]);
+				obji->vt[obji->numtex].y = ft_atof(line_arr[2]);
+				obji->numtex++;
 			}
 			else if (line_arr[0][0] == 'v' && line_arr[0][1] == 'n')
 			{
-				obji->vn[obji->numNormals].x = ft_atof(line_arr[1]);
-				obji->vn[obji->numNormals].y = ft_atof(line_arr[2]);
-				obji->vn[obji->numNormals].z = ft_atof(line_arr[3]);
-				obji->numNormals++;
+				obji->vn[obji->numnormals].x = ft_atof(line_arr[1]);
+				obji->vn[obji->numnormals].y = ft_atof(line_arr[2]);
+				obji->vn[obji->numnormals].z = ft_atof(line_arr[3]);
+				obji->numnormals++;
 			}
 		}
 		i = -1;

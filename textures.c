@@ -12,7 +12,8 @@
 
 #include "scop.h"
 
-unsigned char	*load_bmp(const char *filename, unsigned int *width, unsigned int *height)
+unsigned char	*load_bmp(const char *filename, unsigned int *width,
+														unsigned int *height)
 {
 	FILE				*file;
 	unsigned char		info[54];
@@ -42,10 +43,10 @@ unsigned char	*load_bmp(const char *filename, unsigned int *width, unsigned int 
 
 void			texture_init(const char *filename, t_texture *texture)
 {
-	unsigned int width;
-	unsigned int height;
+	unsigned int	width;
+	unsigned int	height;
+	unsigned char	*data;
 
-	unsigned char * data;
 	data = load_bmp(filename, &width, &height);
 	if (data == NULL)
 		printf("error: image data texture\n");
@@ -55,8 +56,9 @@ void			texture_init(const char *filename, t_texture *texture)
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-	free (data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR,
+													GL_UNSIGNED_BYTE, data);
+	free(data);
 }
 
 void			texture_bind(unsigned int unit, t_texture *texture)
