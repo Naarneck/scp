@@ -110,15 +110,6 @@ typedef	struct	s_shader
 	GLuint			unifs[NUM_UNIFORMS];
 }				t_shader;
 
-typedef	struct	s_data
-{
-	SDL_Window		*window;
-	SDL_GLContext	glcontext;
-	GLenum			status;
-	int				run;
-
-}				t_data;
-
 typedef	struct	s_texture
 {
 	GLuint			texture;
@@ -146,6 +137,15 @@ typedef	struct	s_model
 	t_mat4		scale;
 }				t_model;
 
+typedef	struct	s_fileobj
+{
+	char	*line;
+	char	**line_arr;
+	int		i;
+	int		num;
+	int		fd;
+}				t_fileobj;
+
 typedef	struct	s_transf
 {
 	t_vector	pos;
@@ -154,6 +154,21 @@ typedef	struct	s_transf
 	int			mode;
 	float		loop;
 }				t_transf;
+
+typedef	struct	s_data
+{
+	SDL_Window		*window;
+	SDL_GLContext	glcontext;
+	GLenum			status;
+	int				run;
+	t_mesh 			mesh;
+	t_shader		shader;
+	t_texture		texture;
+	t_transf		transform;
+	t_cam 			camera;
+	t_objindex		obji;
+
+}				t_data;
 
 void			obj_checkfile(const char *filename, t_objindex *obji);
 void			obj_loadfile(const char *filename, t_objindex *obji);
