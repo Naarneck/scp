@@ -88,6 +88,7 @@ typedef	struct	s_objindex
 	unsigned int	is_uvs;
 	unsigned int	is_normals;
 	float			far;
+	int				status;
 }				t_objindex;
 
 typedef	struct	s_mesh
@@ -161,16 +162,25 @@ typedef	struct	s_data
 	SDL_GLContext	glcontext;
 	GLenum			status;
 	int				run;
-	t_mesh 			mesh;
+	t_mesh			mesh;
 	t_shader		shader;
 	t_texture		texture;
 	t_transf		transform;
-	t_cam 			camera;
+	t_cam			camera;
 	t_objindex		obji;
-
 }				t_data;
 
+int				getuv(char *str);
+int				getnormal(char *str);
+char			**ft_strsplitnum(char const *s, char c, int *num);
+float			ft_atof(char *str);
+
+void			obj_init(t_objindex *obji, const char *fn);
+int				obj_alloc(t_objindex *obji);
+void			obj_free_line(t_fileobj *fo);
 void			obj_checkfile(const char *filename, t_objindex *obji);
+void			obj_triangulate_faces(t_objindex *obji, t_fileobj *fo);
+void			obj_write_v_vt_vn(t_objindex *obji, t_fileobj *fo, int id);
 void			obj_loadfile(const char *filename, t_objindex *obji);
 
 void			transform_init(t_vector pos, t_vector rot,
@@ -186,9 +196,9 @@ void			shader_init(t_shader *shader);
 void			shader_del(t_shader *shader);
 GLuint			shader_create(char *text, GLenum shadertype);
 void			shader_bind(t_shader *shader);
-char			*shader_load(const char *filename);
 void			shader_update(t_transf *transf, t_shader *shader, t_cam *cam);
 void			shader_mode_update(t_shader *shader, t_transf *tf);
+char			*shader_load(const char *filename);
 
 void			mesh_init(t_mesh *mesh, t_objindex *obji);
 void			mesh_del(t_mesh *mesh);
@@ -220,14 +230,19 @@ t_mat4			mat4_transpose(t_mat4 src);
 t_mat4			mat4_identity(void);
 
 t_coord			cinit(float x, float y);
-t_coord			csub(t_coord v1, t_coord v2);
-t_coord			cadd(t_coord v1, t_coord v2);
 t_coord			cmul(t_coord v1, float l);
 t_coord			cnorm(t_coord v1);
 float			cdot(t_coord v1, t_coord v2);
 float			clen(t_coord v1);
 
-char			**ft_strsplitnum(char const *s, char c, int *num);
-float			ft_atof(char *str);
 void			quit_scop(t_data *d);
+void			handle_event_tex(SDL_Event event, t_transf *tf,
+															t_texture *tex);
+void			handle_event_obj(SDL_Event event, t_transf *tf);
+int				handle_event(SDL_Event event, t_transf *tf,
+												t_cam *cam, t_texture *tex);
+void			sdlgl_init(t_data *d);
+void			data_init(t_data *d);
+void			data_del(t_data *d);
+int				print_usage(void);
 #endif

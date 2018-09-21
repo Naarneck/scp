@@ -11,9 +11,9 @@
 # **************************************************************************** #
 
 NAME = scop
-SRCS = main.c get_next_line.c vector.c mesh.c \
-	   shader.c textures.c coord.c transform.c mat4.c \
-	   camera.c obj_loader.c
+SRCS = main.c util.c get_next_line.c vector.c vector_sup.c mesh.c \
+	   shader.c shader_util.c textures.c coord.c transform.c mat4.c mat4_util.c \
+	   camera.c obj_loader.c obj_util.c
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 FFLAGS = -framework OpenGL -framework AppKit -F /Library/Frameworks \

@@ -91,8 +91,7 @@ char				**ft_strsplitnum(char const *s, char c, int *num)
 			i = end_index(s, i, c);
 			j++;
 		}
-		if (s[i] != '\0')
-			i++;
+		i = (s[i] != '\0') ? ++i : i;
 	}
 	str[j] = NULL;
 	*num = j;

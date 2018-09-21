@@ -21,20 +21,6 @@ t_coord		cinit(float x, float y)
 	return (vec);
 }
 
-t_coord		csub(t_coord v1, t_coord v2)
-{
-	v1.x -= v2.x;
-	v1.y -= v2.y;
-	return (v1);
-}
-
-t_coord		cadd(t_coord v1, t_coord v2)
-{
-	v1.x += v2.x;
-	v1.y += v2.y;
-	return (v1);
-}
-
 t_coord		cmul(t_coord v1, float l)
 {
 	v1.x *= l;

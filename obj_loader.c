@@ -15,97 +15,10 @@
 #define VT 2
 #define VN 3
 
-int			getuv(char *str)
+int			obj_alloc(t_objindex *obji)
 {
-	int		i;
-	int		first_slash;
-	int		sec_slash;
-	char	*temp;
-
-	first_slash = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (!first_slash && str[i] == '/')
-			first_slash = i;
-		else if (first_slash && str[i] == '/')
-		{
-			sec_slash = i;
-			temp = ft_strsub(str, first_slash + 1, sec_slash - first_slash);
-			i = ft_atoi(temp);
-			free(temp);
-			return (i);
-		}
-		i++;
-	}
-	return (0);
-}
-
-int			getnormal(char *str)
-{
-	int		i;
-	int		first_slash;
-	int		sec_slash;
-	char	*temp;
-
-	first_slash = 0;
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (!first_slash && str[i] == '/')
-			first_slash = i;
-		else if (first_slash && str[i] == '/')
-		{
-			sec_slash = i;
-			temp = ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash);
-			i = ft_atoi(temp);
-			free(temp);
-			return (i);
-		}
-		i++;
-	}
-	return (0);
-}
-
-float		ft_atof(char *str)
-{
-	int		i;
-	float	n;
-	int		mod_div[2];
-	char	*temp;
-	int		minus;
-
-	i = 0;
-	n = 0.0;
-	while (str[i] != '.' && str[i] != ' ' && str[i] != '\0' && str[i] != '\n')
-		i++;
-	temp = ft_strsub(str, 0, i);
-	minus = 1;
-	if (str[0] == '-')
-		minus = -1;
-	mod_div[0] = abs(ft_atoi(temp));
-	n += (float)mod_div[0];
-	free(temp);
-	temp = ft_strsub(str, i + 1, ft_strlen(str) - i);
-	mod_div[1] = ft_atoi(temp);
-	n += pow(0.1, ft_strlen(str) - i - 1) * (float)mod_div[1];
-	free(temp);
-	return (n * minus);
-}
-
-void		obj_init(t_objindex *obji)
-{
-	obji->is_uvs = 0;
-	obji->is_normals = 0;
-	obji->numindices = 0;
-	obji->numpositions = 0;
-	obji->numnormals = 0;
-	obji->numtex = 0;
-	obji->far = 0.0;
-}
-
-void		obj_alloc(t_objindex *obji)
-{
+	if (!obji->status)
+		return (0);
 	obji->v = (t_vector *)malloc(sizeof(t_vector) * obji->numpositions);
 	obji->vt = (t_coord *)malloc(sizeof(t_coord) * obji->numtex);
 	obji->vn = (t_vector *)malloc(sizeof(t_vector) * obji->numnormals);
@@ -121,22 +34,14 @@ void		obj_alloc(t_objindex *obji)
 	obji->numpositions = 0;
 	obji->numnormals = 0;
 	obji->numtex = 0;
-}
-
-void		obj_free_line(t_fileobj *fo)
-{
-	fo->i = -1;
-	while (fo->line_arr[++fo->i])
-		free(fo->line_arr[fo->i]);
-	free(fo->line_arr);
-	free(fo->line);
+	return (1);
 }
 
 void		obj_checkfile(const char *filename, t_objindex *obji)
 {
 	t_fileobj	fo;
 
-	obj_init(obji);
+	obj_init(obji, filename);
 	fo.fd = open(filename, O_RDONLY);
 	while (get_next_line(fo.fd, &fo.line) == 1)
 	{
@@ -212,7 +117,8 @@ void		obj_loadfile(const char *filename, t_objindex *obji)
 	t_fileobj	fo;
 
 	obj_checkfile(filename, obji);
-	obj_alloc(obji);
+	if (!obj_alloc(obji))
+		return ;
 	fo.fd = open(filename, O_RDONLY);
 	while (get_next_line(fo.fd, &fo.line) == 1)
 	{

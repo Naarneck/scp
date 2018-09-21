@@ -80,29 +80,3 @@ void	shader_update(t_transf *transf, t_shader *shader, t_cam *cam)
 	transf->loop += 0.05f;
 	glUniformMatrix4fv(shader->unifs[TRANSFORM_U], 1, GL_FALSE, &mvp.a[0][0]);
 }
-
-void	shader_mode_update(t_shader *shader, t_transf *tf)
-{
-	if (tf->loop > 360.0)
-		tf->loop = 0.0;
-	glUniform1f(shader->unifs[LOOP_U], tf->loop);
-	glUniform1i(shader->unifs[MODE_U], tf->mode);
-}
-
-char	*shader_load(const char *filename)
-{
-	int		fd;
-	char	*text;
-	char	*line;
-
-	text = ft_strnew(100000);
-	fd = open(filename, O_RDONLY);
-	printf("fd # %d\n", fd);
-	while (get_next_line(fd, &line) == 1)
-	{
-		ft_strcat(text, "\n");
-		ft_strcat(text, line);
-		free(line);
-	}
-	return (text);
-}
