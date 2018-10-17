@@ -30,6 +30,8 @@ int			getuv(char *str)
 			sec_slash = i;
 			temp = ft_strsub(str, first_slash + 1, sec_slash - first_slash);
 			i = ft_atoi(temp);
+			if (i <= 0)
+				i = 1;
 			free(temp);
 			return (i);
 		}
@@ -56,6 +58,8 @@ int			getnormal(char *str)
 			sec_slash = i;
 			temp = ft_strsub(str, sec_slash + 1, ft_strlen(str) - sec_slash);
 			i = ft_atoi(temp);
+			if (i <= 0)
+				i = 1;
 			free(temp);
 			return (i);
 		}

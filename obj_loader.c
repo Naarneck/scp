@@ -37,35 +37,6 @@ int			obj_alloc(t_objindex *obji)
 	return (1);
 }
 
-void		obj_checkfile(const char *filename, t_objindex *obji)
-{
-	t_fileobj	fo;
-
-	obj_init(obji, filename);
-	fo.fd = open(filename, O_RDONLY);
-	while (get_next_line(fo.fd, &fo.line) == 1)
-	{
-		if (fo.line != NULL)
-			fo.line_arr = ft_strsplitnum(fo.line, ' ', &fo.num);
-		if (fo.line_arr[0] && fo.line_arr[0][0])
-		{
-			if (fo.line_arr[0][0] == 'f')
-			{
-				obji->numindices += (fo.num - 3);
-				obji->is_normals = getnormal(fo.line_arr[1]) > 0 ? 1 : 0;
-				obji->is_uvs = getuv(fo.line_arr[1]) > 0 ? 1 : 0;
-			}
-			else if (fo.line_arr[0][0] == 'v' && fo.line_arr[0][1] == 't')
-				obji->numtex++;
-			else if (fo.line_arr[0][0] == 'v' && fo.line_arr[0][1] == 'n')
-				obji->numnormals++;
-			else if (fo.line_arr[0][0] == 'v')
-				obji->numpositions++;
-		}
-		obj_free_line(&fo);
-	}
-}
-
 void		obj_triangulate_faces(t_objindex *obji, t_fileobj *fo)
 {
 	obji->posid[obji->numindices] = ft_atoi(fo->line_arr[1]) - 1;

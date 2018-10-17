@@ -13,7 +13,7 @@
 NAME = scop
 SRCS = main.c util.c get_next_line.c vector.c vector_sup.c mesh.c \
 	   shader.c shader_util.c textures.c coord.c transform.c mat4.c mat4_util.c \
-	   camera.c obj_loader.c obj_util.c
+	   camera.c obj_loader.c obj_util.c obj_check.c
 OBJS = $(SRCS:.c=.o)
 CFLAGS = -Wall -Wextra -Werror
 FFLAGS = -framework OpenGL -framework AppKit -F /Library/Frameworks \
@@ -24,7 +24,7 @@ JUNK = $(wildcard .DS_Store */.DS_Store */*/.DS_Store *.gch \
 
 all:$(NAME)
 
-$(NAME): 
+$(NAME): $(OBJS)
 	@make -C libft/
 	@make -C libglew/
 	@gcc -o $(NAME) $(CFLAGS) $(SRCS) $(FFLAGS) libft/libft.a -I libglew/include libglew/lib/libGLEW.a 

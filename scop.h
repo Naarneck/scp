@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <math.h>
 # include <stdlib.h>
-# include <GL/glew.h>
+# include "libglew/include/GL/glew.h"
 # include <OpenGL/gl.h>
 # include <SDL2/SDL.h>
 # include "libft/libft.h"
@@ -178,6 +178,8 @@ float			ft_atof(char *str);
 void			obj_init(t_objindex *obji, const char *fn);
 int				obj_alloc(t_objindex *obji);
 void			obj_free_line(t_fileobj *fo);
+int				obj_checkf(t_fileobj *fo, t_objindex *obji);
+int				obj_checkvvnvt(t_fileobj *fo, t_objindex *obji);
 void			obj_checkfile(const char *filename, t_objindex *obji);
 void			obj_triangulate_faces(t_objindex *obji, t_fileobj *fo);
 void			obj_write_v_vt_vn(t_objindex *obji, t_fileobj *fo, int id);
