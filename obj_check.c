@@ -47,7 +47,7 @@ int			obj_checkf(t_fileobj *fo, t_objindex *obji)
 			if (ft_atoi(fo->line_arr[i]) <= 0)
 				return (0);
 		}
-		if (fo->num < 4)
+		if (fo->num < 3)
 			return (0);
 		obji->numindices += (fo->num - 3);
 		if (ft_atoi(fo->line_arr[1]) <= 0)
